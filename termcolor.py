@@ -101,7 +101,7 @@ def colored(text, color=None, on_color=None, attrs=None):
         bold, dark, underline, blink, reverse, concealed.
 
     Example:
-        colored('Hello, World!', 'red', 'on_grey', ['blue', 'blink'])
+        colored('Hello, World!', 'red', 'on_grey', ['bold', 'blink'])
         colored('Hello, World!', 'green')
     """
     if os.getenv('ANSI_COLORS_DISABLED') is None:
