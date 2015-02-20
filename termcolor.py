@@ -30,7 +30,7 @@ import re
 
 __ALL__ = [ 'colored', 'cprint' ]
 
-VERSION = (1, 1, 0)
+VERSION = (1, 2, 0)
 
 ATTRIBUTES = {
     'bold': 1,
@@ -45,7 +45,7 @@ ATTRIBUTES_RE = '\033\[(?:%s)m' % '|'.join(['%d' % v for v in ATTRIBUTES.values(
 
 HIGHLIGHTS = {
     'on_black': 40,
-    'on_grey': 40,
+    'on_grey': 40, # is actually black
     'on_red': 41,
     'on_green': 42,
     'on_yellow': 43,
@@ -67,7 +67,7 @@ HIGHLIGHTS_RE = '\033\[(?:%s)m' % '|'.join(['%d' % v for v in HIGHLIGHTS.values(
 
 COLORS = {
     'black': 30,
-    'grey': 30,
+    'grey': 30, # is actually black
     'red': 31,
     'green': 32,
     'yellow': 33,
@@ -97,32 +97,42 @@ def colored(text, color=None, on_color=None, attrs=None):
     Available text colors:
         red, green, yellow, blue, magenta, cyan, white, black, light_grey,
         dark_grey, light_red, light_green, light_yellow, light_blue, 
-        light_magenta, light_cyan.
+        light_magenta, light_cyan. Additionally, if 256 colors are supported,
+        any integer between 1 and 255 can be provided.
 
     Available text highlights:
         on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan, on_black,
         on_white, on_light_grey, on_dark_grey, on_light_red, on_light_green,
         on_light_yellow, on_light_blue, on_light_magenta, light_cyan.
+        Additionally, if 256 colors are supported, any integer between 1 and
+        255 can be provided.
 
     Available attributes:
         bold, dark, underline, blink, reverse, concealed.
 
     Example:
-        colored('Hello, World!', 'red', 'on_grey', ['bold', 'blink'])
-        colored('Hello, World!', 'green')
+        colored('Hello, World!', 'red', 'on_black', ['bold', 'blink'])
+        colored('Hello, World!', 191, 182)
     """
     if os.getenv('ANSI_COLORS_DISABLED') is None:
-        fmt_str = '\033[%dm%s'
+        fmt16_str = '\033[%sm%s'
+        fmt256_str = '\033[%d;5;%dm%s'
         if color is not None:
             text = re.sub(COLORS_RE + '(.*?)' + RESET_RE, r'\1', text)
-            text = fmt_str % (COLORS[color], text)
+            if color in COLORS:
+                text = fmt16_str % (COLORS[color], text)
+            elif isinstance(color, int):
+                text = fmt256_str % (38, color, text)
         if on_color is not None:
             text = re.sub(HIGHLIGHTS_RE + '(.*?)' + RESET_RE, r'\1', text)
-            text = fmt_str % (HIGHLIGHTS[on_color], text)
+            if on_color in HIGHLIGHTS:
+                text = fmt16_str % (HIGHLIGHTS[on_color], text)
+            elif isinstance(on_color, int):
+                text = fmt256_str % (48, on_color, text)
         if attrs is not None:
             text = re.sub(ATTRIBUTES_RE + '(.*?)' + RESET_RE, r'\1', text)
-            for attr in attrs:
-                text = fmt_str % (ATTRIBUTES[attr], text)
+            for attr in attrs if hasattr(attrs, '__iter__') else [attrs]:
+                text = fmt16_str % (ATTRIBUTES[attr], text)
         return text + RESET
     else:
         return text
@@ -139,7 +149,7 @@ def cprint(text, color=None, on_color=None, attrs=None, **kwargs):
 
 if __name__ == '__main__':
     print('Current terminal type: %s' % os.getenv('TERM'))
-    print('Test basic colors:')
+    print('Test colors:')
     cprint('Black color', 'black')
     cprint('Red color', 'red')
     cprint('Green color', 'green')
@@ -183,7 +193,12 @@ if __name__ == '__main__':
     print(('-' * 78))
 
     print('Test mixing:')
-    cprint('Underline red on black color', 'red', 'on_black',
-            ['underline'])
+    cprint('Underline red on black color', 'red', 'on_black', ['underline'])
     cprint('Reversed green on red color', 'green', 'on_red', ['reverse'])
+    print(('-' * 78))
 
+    print('Test 256 colors:')
+    for i in range(1,256):
+        lb = '' if i % 16 != 0 else '\n'
+        cprint(format(i, '3'), on_color=i, end=lb)
+    print()
