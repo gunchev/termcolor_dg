@@ -26,6 +26,7 @@
 from __future__ import print_function
 import os
 import re
+import sys
 
 
 __ALL__ = [ 'colored', 'cprint' ]
@@ -104,7 +105,7 @@ def colored(text, color=None, on_color=None, attrs=None):
         colored('Hello, World!', 'red', 'on_grey', ['blue', 'blink'])
         colored('Hello, World!', 'green')
     """
-    if os.getenv('ANSI_COLORS_DISABLED') is None:
+    if os.getenv('ANSI_COLORS_DISABLED') is None and sys.stdout.isatty():
         fmt_str = '\033[%dm%s'
         if color is not None:
             text = re.sub(COLORS_RE + '(.*?)' + RESET_RE, r'\1', text)
