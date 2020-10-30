@@ -26,6 +26,7 @@
 from __future__ import print_function
 import os
 import re
+import sys
 
 
 __ALL__ = [ 'colored', 'cprint' ]
@@ -96,7 +97,7 @@ def colored(text, color=None, on_color=None, attrs=None):
 
     Available text colors:
         red, green, yellow, blue, magenta, cyan, white, black, light_grey,
-        dark_grey, light_red, light_green, light_yellow, light_blue, 
+        dark_grey, light_red, light_green, light_yellow, light_blue,
         light_magenta, light_cyan. Additionally, if 256 colors are supported,
         any integer between 1 and 255 can be provided.
 
@@ -114,9 +115,10 @@ def colored(text, color=None, on_color=None, attrs=None):
         colored('Hello, World!', 'red', 'on_black', ['bold', 'blink'])
         colored('Hello, World!', 191, 182)
     """
-    if os.getenv('ANSI_COLORS_DISABLED') is None:
+    if os.getenv('ANSI_COLORS_DISABLED') is None and sys.stdout.isatty():
         fmt16_str = '\033[%sm%s'
         fmt256_str = '\033[%d;5;%dm%s'
+
         if color is not None:
             text = re.sub(COLORS_RE + '(.*?)' + RESET_RE, r'\1', text)
             if color in COLORS:
