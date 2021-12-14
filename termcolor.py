@@ -29,7 +29,7 @@ import re
 import sys
 
 
-__ALL__ = [ 'colored', 'cprint' ]
+__all__ = [ 'colored', 'cprint' ]
 
 VERSION = (1, 2, 0)
 
