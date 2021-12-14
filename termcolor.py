@@ -42,7 +42,7 @@ ATTRIBUTES = {
     'concealed': 8,
 }
 
-ATTRIBUTES_RE = '\033\[(?:%s)m' % '|'.join(['%d' % v for v in ATTRIBUTES.values()])
+ATTRIBUTES_RE = '\033\\[(?:%s)m' % '|'.join(['%d' % v for v in ATTRIBUTES.values()])
 
 HIGHLIGHTS = {
     'on_black': 40,
@@ -64,7 +64,7 @@ HIGHLIGHTS = {
     'on_white': 107,
 }
 
-HIGHLIGHTS_RE = '\033\[(?:%s)m' % '|'.join(['%d' % v for v in HIGHLIGHTS.values()])
+HIGHLIGHTS_RE = '\033\\[(?:%s)m' % '|'.join(['%d' % v for v in HIGHLIGHTS.values()])
 
 COLORS = {
     'black': 30,
@@ -86,10 +86,10 @@ COLORS = {
     'white': 97,
 }
 
-COLORS_RE = '\033\[(?:%s)m' % '|'.join(['%d' % v for v in COLORS.values()])
+COLORS_RE = '\033\\[(?:%s)m' % '|'.join(['%d' % v for v in COLORS.values()])
 
 RESET = '\033[0m'
-RESET_RE = '\033\[0m'
+RESET_RE = '\033\\[0m'
 
 
 def colored(text, color=None, on_color=None, attrs=None):
