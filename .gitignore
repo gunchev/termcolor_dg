@@ -1,3 +1,10 @@
-build
+/__pycache__
+/build
+/easy-install*
+/easy_install*
+/setuptools.pth
+/*.egg-info/
+/*.egg-link
+/termcolor_demo
 *.pyc
 *.pyo
