@@ -32,7 +32,8 @@ import sys
 
 __all__ = ['colored', 'cprint']
 
-VERSION = (1, 2, 0)
+VERSION = (1, 9, 1)
+__version__ = '.'.join([str(v) for v in VERSION])
 
 ATTRIBUTES = {
     'bold': 1,
