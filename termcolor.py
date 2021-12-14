@@ -23,13 +23,14 @@
 
 """ANSII Color formatting for output in terminal."""
 
-from __future__ import print_function
+from __future__ import absolute_import, print_function, division, unicode_literals
+
 import os
 import re
 import sys
 
 
-__all__ = [ 'colored', 'cprint' ]
+__all__ = ['colored', 'cprint']
 
 VERSION = (1, 2, 0)
 
@@ -149,7 +150,8 @@ def cprint(text, color=None, on_color=None, attrs=None, **kwargs):
     print((colored(text, color, on_color, attrs)), **kwargs)
 
 
-if __name__ == '__main__':
+def termcolor_demo():
+    '''Demonstrate this module's capabilities'''
     print('Current terminal type: %s' % os.getenv('TERM'))
     print('Test colors:')
     cprint('Black color', 'black')
@@ -168,7 +170,7 @@ if __name__ == '__main__':
     cprint('Light blue color', 'light_blue')
     cprint('Light magenta color', 'light_magenta')
     cprint('Light cyan color', 'light_cyan')
-    print(('-' * 78))
+    print('-' * 78)
 
     print('Test highlights:')
     cprint('On black color', on_color='on_black')
@@ -189,18 +191,22 @@ if __name__ == '__main__':
     cprint('Reversed blue color', 'blue', attrs=['reverse'])
     cprint('Concealed Magenta color', 'magenta', attrs=['concealed'])
     cprint('Bold underline reverse cyan color', 'cyan',
-            attrs=['bold', 'underline', 'reverse'])
+           attrs=['bold', 'underline', 'reverse'])
     cprint('Dark blink concealed white color', 'white',
-            attrs=['dark', 'blink', 'concealed'])
-    print(('-' * 78))
+           attrs=['dark', 'blink', 'concealed'])
+    print('-' * 78)
 
     print('Test mixing:')
     cprint('Underline red on black color', 'red', 'on_black', ['underline'])
     cprint('Reversed green on red color', 'green', 'on_red', ['reverse'])
-    print(('-' * 78))
+    print('-' * 78)
 
     print('Test 256 colors:')
-    for i in range(1,256):
-        lb = '' if i % 16 != 0 else '\n'
-        cprint(format(i, '3'), on_color=i, end=lb)
+    for i in range(1, 256):
+        ln_brk = '' if i % 16 != 0 else '\n'
+        cprint(format(i, '3'), on_color=i, end=ln_brk)
     print()
+
+
+if __name__ == '__main__':
+    termcolor_demo()
