@@ -92,6 +92,13 @@ COLORS_RE = '\033\\[(?:%s)m' % '|'.join(['%d' % v for v in COLORS.values()])
 RESET = '\033[0m'
 RESET_RE = '\033\\[0m'
 
+# Python 2 and 3 compatatability
+if sys.version_info[0] == 3:
+    raw_input = input  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    unicode = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    basestring = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    long = int  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+
 
 def colored(text, color=None, on_color=None, attrs=None):
     """Colorize text, while stripping nested ANSI color sequences.
@@ -134,11 +141,12 @@ def colored(text, color=None, on_color=None, attrs=None):
                 text = fmt256_str % (48, on_color, text)
         if attrs is not None:
             text = re.sub(ATTRIBUTES_RE + '(.*?)' + RESET_RE, r'\1', text)
-            for attr in attrs if hasattr(attrs, '__iter__') else [attrs]:
-                text = fmt16_str % (ATTRIBUTES[attr], text)
+            for attr in [attrs] if isinstance(attrs, basestring) else attrs:
+                if attr in ATTRIBUTES:
+                    text = fmt16_str % (ATTRIBUTES[attr], text)
         return text + RESET
-    else:
-        return text
+
+    return text
 
 
 def cprint(text, color=None, on_color=None, attrs=None, **kwargs):
