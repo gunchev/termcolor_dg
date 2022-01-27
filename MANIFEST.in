@@ -1,0 +1,14 @@
+global-exclude *.py[cod]
+
+
+# Project specific #
+####################
+include CHANGES.md
+include color_logs.png
+include colors.png
+include LICENSE
+include pyproject.toml
+include README.md
+
+include tox.ini
+include Makefile
