@@ -1,19 +1,19 @@
-# Termcolor
+# termcolor_dg
 
-📦 [pypi/termcolor2](https://pypi.python.org/pypi/termcolor2) |
+📦 [pypi/termcolor_dg](https://pypi.python.org/pypi/termcolor_dg) |
 📦 [pypi/termcolor](https://pypi.python.org/pypi/termcolor) |
 📑 [Color codes cheatsheet](https://delameter.github.io/termcolor) |
 📑 [ANSI/VT100 Terminal Control Escape Sequences](https://www2.ccs.neu.edu/research/gpc/VonaUtils/vona/terminal/vtansi.htm)
 
-ANSII Color formatting for output in the terminal. Supports 16 color, 256 color and 24-bit color modes.
+ANSI Color formatting for terminal output and log coloring. Supports 16 color, 256 color and 24-bit color modes.
 
-Python 2 support is present for legacy projects and because it is not too much work.
+Python 2 support is present for legacy projects and because it is not too much work and I have to use it for now.
 
 
 ## Example
 
 ```python
->>> from termcolor2 import colored, cprint
+>>> from termcolor_dg import colored, cprint
 >>>
 >>> print(colored('Hello, World!', 'light_red', 'on_blue'))
 >>> cprint('Hello, World!', 'blue', 'on_light_red', ['reverse', 'blink'])
@@ -28,18 +28,18 @@ Python 2 support is present for legacy projects and because it is not too much w
 >>> cprint("Attention!", 'red', attrs=('bold'), file=sys.stderr)
 >>>
 >>> import logging
->>> from termcolor2 import logging_basic_color_config
+>>> from termcolor_dg import logging_basic_color_config
 >>> logging_basic_color_config()
 >>> logging.log(logging.INFO, 'test')
 ```
 
 
-## Colors demo screenshot (`python -m termcolor2`):
+## Colors demo screenshot (`python -m termcolor_dg`):
 
 ![colors screenshot](colors.png)
 
 
-## Colored logs demo screenshot (`python -m termcolor2 logs`):
+## Colored logs demo screenshot (`python -m termcolor_dg logs`):
 
 ![colored logs screenshot](color_logs.png)
 
@@ -99,8 +99,11 @@ only if the ``stdout`` is attached to a terminal: ``sys.stdout.isatty()``.
 | **iTerm2**       |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
 
 [^1]: Disabled by default
+
 [^2]: Supports color change, bold text or both.
+
 [^3]: See [VGA text mode](https://en.wikipedia.org/wiki/VGA_text_mode)
+
 [^4]: See [Add support for the "concealed" graphic rendition attribute #6876 ](https://github.com/microsoft/terminal/issues/6876)
 
 
@@ -108,7 +111,7 @@ only if the ``stdout`` is attached to a terminal: ``sys.stdout.isatty()``.
 
 You may want to check out:
 
-- 📦 [pypi/termcolor](https://pypi.python.org/pypi/termcolor) - the original project termcolor2 extends
+- 📦 [pypi/termcolor](https://pypi.python.org/pypi/termcolor) - the original project termcolor_dg extends
 - 📦 [pypi/colorama](https://pypi.org/project/colorama/) for more advanced options.
 
 

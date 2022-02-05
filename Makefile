@@ -19,7 +19,7 @@ test:
 clean:
 	coverage erase
 	rm -rf ./.tox ./.coverage* ./coverage.json ./coverage.xml ./htmlcov/ ./build/ ./dist/
-	rm -rf ./easy-install* ./easy_install* ./setuptools.pth ./*.egg-link
+	rm -rf ./easy-install* ./easy_install* ./setuptools.pth ./*.egg-link termcolor_dg_demo termcolor_dg_demo_log
 	find . -depth -name '__pycache__' -exec rm -rf \{\} \;
 	find . -depth \( -name '*.pyc' -o -name '*.pyo' -o -name '*.egg-info' -o -name '*.py,cover'  \) -exec rm -rf \{\} \;
 

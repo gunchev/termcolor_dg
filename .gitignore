@@ -23,5 +23,5 @@
 *.py[co]
 __pycache__
 
-/termcolor_demo
-
+/termcolor_dg_demo
+/termcolor_dg_demo_log

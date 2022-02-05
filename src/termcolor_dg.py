@@ -22,11 +22,11 @@
 #
 # Original author: Konstantin Lepa <konstantin.lepa@gmail.com>
 
-'''ANSII Color formatting for output in terminal.
+'''ANSI Color formatting for terminal output and logging coloring.
 
-Run `python -m termcolor2` for color demo
+Run `python -m termcolor_dg` for color demo
 
-Run `python -m termcolor2 logs` for colored logs demo
+Run `python -m termcolor_dg logs` for colored logs demo
 '''
 
 from __future__ import absolute_import, print_function, division

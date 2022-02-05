@@ -1,9 +1,9 @@
-# termcolor2 changes
+# termcolor_dg changes
 
 
 ## 0.9.0 (2022-02-05)
 
-- fork to termcolor2
+- fork to termcolor_dg
 - add 24-bit colors support
 - add logging and color demos
 - add ANSI_COLORS_DISABLED and ANSI_COLORS_FORCE environment variables
