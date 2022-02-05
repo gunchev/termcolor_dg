@@ -83,18 +83,18 @@ only if the ``stdout`` is attached to a terminal: ``sys.stdout.isatty()``.
 
 | Terminal         |  bold  | dark | underline |  blink  | reverse | concealed | 256 colors | 24-bit color |
 | :--------------- | :----: | :--: | :-------: | :-----: | :-----: | :-------: | :--------: | :----------: |
-| **linux**        | ❎[^3] |❎[^3]|   ✅[^3]  |  ✅[^3] |    ✅   |     ❎    |     ❎     |      ❎      |
+| **linux**        | ❌[^3] |❌[^3]|   ✅[^3]  |  ✅[^3] |    ✅   |     ❌    |     ❌     |      ❌      |
 | **konsole**      |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
 | **terminator**   |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
-| **kitty**        |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ❎    |     ✅     |      ✅      |
-| **xterm**        |   ✅   |  ❎  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
-| **rxvt**         |   ✅   |  ❎  |     ✅    |    ✅   |    ✅   |     ❎    |     ✅     |      ❎      |
+| **kitty**        |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ❌    |     ✅     |      ✅      |
+| **xterm**        |   ✅   |  ❌  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
+| **rxvt**         |   ✅   |  ❌  |     ✅    |    ✅   |    ✅   |     ❌    |     ✅     |      ❌      |
 | **dtterm**       |   ✅   |  ✅  |     ✅    | reverse |    ✅   |     ✅    |     ❓     |      ❓      |
-| **teraterm**     | reverse|  ❎  |     ✅    | rev/red |    ✅   |     ❎    |     ❓     |      ❓      |
-| **aixterm**      | normal |  ❎  |     ✅    |    ❎   |    ✅   |     ✅    |     ❓     |      ❓      |
-| **Windows**      |   ❎   |  ❎  |     ❎    |    ❎   |    ✅   |   ✅[^4]  |     ❓     |      ✅      |
-| **PuTTY**        | ✅[^2] |  ✅  |     ✅    |  ✅[^1] |    ✅   |     ❎    |     ✅     |      ✅      |
-| **Cygwin SSH**   |   ✅   |  ❎  |    color  |  color  |  color  |     ✅    |     ❓     |      ❓      |
+| **teraterm**     | reverse|  ❌  |     ✅    | rev/red |    ✅   |     ❌    |     ❓     |      ❓      |
+| **aixterm**      | normal |  ❌  |     ✅    |    ❌   |    ✅   |     ✅    |     ❓     |      ❓      |
+| **Windows**      |   ❌   |  ❌  |     ❌    |    ❌   |    ✅   |   ✅[^4]  |     ❓     |      ✅      |
+| **PuTTY**        | ✅[^2] |  ✅  |     ✅    |  ✅[^1] |    ✅   |     ❌    |     ✅     |      ✅      |
+| **Cygwin SSH**   |   ✅   |  ❌  |    color  |  color  |  color  |     ✅    |     ❓     |      ❓      |
 | **Mac Terminal** |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
 | **iTerm2**       |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
 
