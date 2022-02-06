@@ -103,10 +103,8 @@ class TestPySrcModule(unittest.TestCase):
         self.assertEqual(termcolor_dg.colored('test', on_color=2), '\x1b[48;5;2mtest\x1b[0m')
         self.assertEqual(termcolor_dg.colored('test', None, (0, 0, 255)), '\x1b[48;2;0;0;255mtest\x1b[0m')
 
-        self.assertEqual(termcolor_dg.colored('test', 'red', 'on_blue', ['bold']),
-                         '\x1b[31m\x1b[44m\x1b[1mtest\x1b[0m')
-        self.assertEqual(termcolor_dg.colored('test', 'red', 'on_blue', ['bold'], reset=False),
-                         '\x1b[31m\x1b[44m\x1b[1mtest')
+        self.assertEqual(termcolor_dg.colored('test', 'red', 'on_blue', ['bold']), '\x1b[31;44;1mtest\x1b[0m')
+        self.assertEqual(termcolor_dg.colored('test', 'red', 'on_blue', ['bold'], reset=False), '\x1b[31;44;1mtest')
 
         termcolor_dg.DISABLED = True
         self.assertEqual(termcolor_dg.colored('test', 'red'), 'test')
@@ -122,10 +120,9 @@ class TestPySrcModule(unittest.TestCase):
         self.assertEqual(termcolor_dg.always_colored('test', on_color=2), '\x1b[48;5;2mtest\x1b[0m')
         self.assertEqual(termcolor_dg.always_colored('test', None, (0, 0, 255)), '\x1b[48;2;0;0;255mtest\x1b[0m')
 
-        self.assertEqual(termcolor_dg.always_colored('test', 'red', 'on_blue', ['bold']),
-                         '\x1b[31m\x1b[44m\x1b[1mtest\x1b[0m')
+        self.assertEqual(termcolor_dg.always_colored('test', 'red', 'on_blue', ['bold']), '\x1b[31;44;1mtest\x1b[0m')
         self.assertEqual(termcolor_dg.always_colored('test', 'red', 'on_blue', ['bold'], reset=False),
-                         '\x1b[31m\x1b[44m\x1b[1mtest')
+                         '\x1b[31;44;1mtest')
 
     def test_rainbow_color(self):
         '''Test rainbow_color'''
@@ -162,24 +159,24 @@ class TestPySrcModule(unittest.TestCase):
 
         self.assertTrue(termcolor_dg.monkey_patch_logging())
 
-        head_expected = 'Logging test... levels and exception:\n\x1b[30m\x1b[44m\x1b[2m'
+        head_expected = 'Logging test... levels and exception:\n\x1b[30;44;2m'
         self.assertEqual(output[:len(head_expected)], head_expected)
         tail_expected = ' logger\x1b[0m\n'
         self.assertEqual(output[-len(tail_expected):], tail_expected)
-        output_len = 1756
+        output_len = 1694
         if sys.version_info[:2] == (3, 10):
-            output_len = 1761
+            output_len = 1699
         elif sys.version_info[:2] == (3, 6):
-            output_len = 1759
+            output_len = 1697
         elif sys.version_info[:2] == (2, 7):
-            output_len = 1759
+            output_len = 1697
         self.assertEqual(len(output), output_len)  # Well...
         split_chunks = (
             (10, 'DEBUG,'),
             (100, "TypeError('%d"),
             (101, 'format:'),
             (102, 'a'),
-            (-4, 'Done.\x1b[0m\x1b[34m\x1b[2m'),
+            (-4, 'Done.\x1b[0m\x1b[34;2m'),
             (-1, 'logger\x1b[0m')
         )
         output_split = output.split()
@@ -189,7 +186,7 @@ class TestPySrcModule(unittest.TestCase):
         # cover the "no tail" logging case
         log_record = logging.LogRecord('name', logging.INFO, 'pathname', 1, 'test', [], None)
         out = logging.Formatter('%(message)s').format(log_record)
-        self.assertEqual(out, '\x1b[32m\x1b[1mtest\x1b[0m')
+        self.assertEqual(out, '\x1b[32;1mtest\x1b[0m')
         # Cover the disabled ...
         termcolor_dg.monkey_unpatch_logging()
         termcolor_dg.monkey_unpatch_logging()
@@ -204,9 +201,9 @@ class TestPySrcModule(unittest.TestCase):
             termcolor_dg.termcolor_demo()
             output = out.get_output()
 
-        self.assertEqual(len(output), 478767, "Unexpected output size")
+        self.assertEqual(len(output), 477595, "Unexpected output size")
         self.assertEqual(output[:33], '\x1bc--- 16 color mode test on TERM=', 'Bad output start')
-        tail = '=\x1b[0m\x1b[38;2;0;27;255m\x1b[48;2;255;0;27m=\x1b[0m\x1b[38;2;0;13;255m\x1b[48;2;255;0;13m=\x1b[0m\n'
+        tail = ';40m=\x1b[0m\x1b[38;2;0;27;255;48;2;255;0;27m=\x1b[0m\x1b[38;2;0;13;255;48;2;255;0;13m=\x1b[0m\n'
         self.assertEqual(output[-80:], tail, 'Bad output tailing 80 chars')
 
     def test_errors(self):

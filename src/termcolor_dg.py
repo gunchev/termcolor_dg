@@ -38,9 +38,9 @@ import time
 
 
 __all__ = ['always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging', 'logging_basic_color_config',
-           'monkey_unpatch_logging', 'monkey_unpatch_logging_format']
+           'COLOR_RESET_STR']
 
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 __copyright__ = 'Copyright (c) 2008-2011 Volvox Development Team'
 __license__ = 'MIT'
 
@@ -66,60 +66,80 @@ DISABLED = os.getenv('ANSI_COLORS_DISABLED') is not None \
 COLOR_RESET_STR = '\033[0m'
 ERASE_EOL_STR = '\033[2K'
 RESET_STR = '\033c'
-FMT16_STR = '\033[%sm'
-FMT256_STR = '\033[%d;5;%dm'
-FMT24BIT_STR = '\033[%d;2;%d;%d;%dm'  # https://gist.github.com/lifepillar/09a44b8cf0f9397465614e622979107f
 
 ATTRIBUTES = {
-    'bold': 1,
-    'dark': 2,
-    'underline': 4,
-    'blink': 5,
-    'reverse': 7,
-    'concealed': 8,
+    'bold': '1',
+    'dark': '2',
+    'underline': '4',
+    'blink': '5',
+    'reverse': '7',
+    'concealed': '8',
 }
 
 COLORS = {
-    'black': 30,
-    'red': 31,
-    'green': 32,
-    'yellow': 33,
-    'blue': 34,
-    'magenta': 35,
-    'cyan': 36,
-    'light_grey': 37,
-    'dark_grey': 90,
-    'light_red': 91,
-    'light_green': 92,
-    'light_yellow': 93,
-    'light_blue': 94,
-    'light_magenta': 95,
-    'light_cyan': 96,
-    'white': 97,
+    'black': '30',
+    'red': '31',
+    'green': '32',
+    'yellow': '33',
+    'blue': '34',
+    'magenta': '35',
+    'cyan': '36',
+    'light_grey': '37',
+    'dark_grey': '90',
+    'light_red': '91',
+    'light_green': '92',
+    'light_yellow': '93',
+    'light_blue': '94',
+    'light_magenta': '95',
+    'light_cyan': '96',
+    'white': '97',
 }
 
 HIGHLIGHTS = {
-    'black': 40,
-    'red': 41,
-    'green': 42,
-    'yellow': 43,
-    'blue': 44,
-    'magenta': 45,
-    'cyan': 46,
-    'light_grey': 47,
-    'dark_grey': 100,
-    'light_red': 101,
-    'light_green': 102,
-    'light_yellow': 103,
-    'light_blue': 104,
-    'light_magenta': 105,
-    'light_cyan': 106,
-    'white': 107,
+    'black': '40',
+    'red': '41',
+    'green': '42',
+    'yellow': '43',
+    'blue': '44',
+    'magenta': '45',
+    'cyan': '46',
+    'light_grey': '47',
+    'dark_grey': '100',
+    'light_red': '101',
+    'light_green': '102',
+    'light_yellow': '103',
+    'light_blue': '104',
+    'light_magenta': '105',
+    'light_cyan': '106',
+    'white': '107',
 }
 
 
+def color_fmt(color, colors16, cnum):
+    '''Format the color/background escape sequence chunk'''
+    if isinstance(color, basestring):
+        if color.startswith('on_'):  # backwards compatibility
+            color = color[3:]
+        if color in colors16:
+            return colors16[color]
+        raise ValueError("Invalid color %r" % color)
+
+    if isinstance(color, int):
+        if 0 <= color <= 255:
+            return "%d;5;%d" % (cnum, color)
+        raise ValueError("Invalid color %d" % color)
+
+    if isinstance(color, (list, tuple)):
+        if len(color) == 3 and 0 <= color[0] <= 255 and 0 <= color[1] <= 255 and 0 <= color[2] <= 255:
+            return '%d;2;%d;%d;%d' % (cnum, color[0], color[1], color[2])
+        else:
+            raise ValueError("Invalid color %r" % (color,))
+
+    raise TypeError("Unsupported color type %s" % type(color).__name__)
+
+
 def always_colored(text, color=None, on_color=None, attrs=None, reset=True):
-    '''Colorize text
+    '''Color text with ANSI escape codes
 
     color (text color): 'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'light_grey', 'dark_grey',
         'light_red', 'light_green', 'light_yellow', 'light_blue', 'light_magenta', 'light_cyan', 'white'.
@@ -138,61 +158,28 @@ def always_colored(text, color=None, on_color=None, attrs=None, reset=True):
         always_colored('Hello, World!', 191, 182)
         always_colored('24bit color!', (255, 127, 127), (127, 127, 255), ['bold'])
     '''
-    pfx = ''
-
+    pfx = []
     if color is not None:
-        if isinstance(color, basestring):
-            if color in COLORS:
-                pfx = FMT16_STR % (COLORS[color])
-            else:
-                raise ValueError("Invalid color %r" % color)
-        elif isinstance(color, int):
-            if 0 <= color <= 255:
-                pfx = FMT256_STR % (38, color)
-            else:
-                raise ValueError("Invalid color %d" % color)
-        elif isinstance(color, (list, tuple)):
-            if len(color) == 3 and 0 <= color[0] <= 255 and 0 <= color[1] <= 255 and 0 <= color[2] <= 255:
-                pfx = FMT24BIT_STR % (38, color[0], color[1], color[2])
-            else:
-                raise ValueError("Invalid color %r" % (color,))
-        else:
-            raise TypeError("Unsupported color type %s" % type(color).__name__)
+        pfx.append(color_fmt(color, COLORS, 38))
 
     if on_color is not None:
-        if isinstance(on_color, basestring):
-            if on_color.startswith('on_'):
-                on_color = on_color[3:]
-            if on_color in HIGHLIGHTS:
-                pfx += FMT16_STR % (HIGHLIGHTS[on_color])
-            else:
-                raise ValueError("Invalid on_color %r" % on_color)
-        elif isinstance(on_color, int):
-            if 0 <= on_color <= 255:
-                pfx += FMT256_STR % (48, on_color)
-            else:
-                raise ValueError("Invalid on_color %d" % on_color)
-        elif isinstance(on_color, (list, tuple)):
-
-            if len(on_color) == 3 and 0 <= on_color[0] <= 255 and 0 <= on_color[1] <= 255 and 0 <= on_color[2] <= 255:
-                pfx += FMT24BIT_STR % (48, on_color[0], on_color[1], on_color[2])
-            else:
-                raise ValueError("Invalid on_color %r" % (on_color, ))
-        else:
-            raise TypeError("Unsupported on_color type %s" % type(on_color).__name__)
+        pfx.append(color_fmt(on_color, HIGHLIGHTS, 48))
 
     if attrs is not None:
         for attr in [attrs] if isinstance(attrs, basestring) else attrs:
             if attr in ATTRIBUTES:
-                pfx += FMT16_STR % (ATTRIBUTES[attr])
+                pfx.append(ATTRIBUTES[attr])
             else:
                 raise ValueError("Invalid attribute %r" % attr)
 
-    return pfx + text + (COLOR_RESET_STR if reset and pfx else '')
+    if pfx:
+        return '\033[' + ';'.join(pfx) + 'm' + text + (COLOR_RESET_STR if reset else '')
+
+    return text
 
 
 def colored(text, color=None, on_color=None, attrs=None, reset=True):
-    '''Colorize text if running on terminal.
+    '''Color text with ANSI escape codes if running on terminal (or overridden).
 
     Environment variables:
         - **ANSI_COLORS_FORCE**: any value (even empty) will force colorizing the text.
@@ -223,13 +210,13 @@ def colored(text, color=None, on_color=None, attrs=None, reset=True):
     return always_colored(text, color, on_color, attrs, reset)
 
 
-def cprint(text='', color=None, on_color=None, attrs=None, **kwargs):
+def cprint(text='', color=None, on_color=None, attrs=None, reset=True, **kwargs):
     '''
     Print colorized text.
 
     It accepts arguments of print function.
     '''
-    print(colored(text, color, on_color, attrs), **kwargs)
+    print(colored(text, color, on_color, attrs, reset), **kwargs)
 
 
 def rainbow_color(n, steps, nmax=255):
@@ -444,7 +431,7 @@ def termcolor_demo_256():
     print('\n--- 256 color mode test '.ljust(120, '-'))
     print(' First 16: [', end='')
     for i in range(16):
-        cprint('%3d ' % i, color=15 - i, on_color=i, end='')
+        cprint('%3d ' % i, color=15 - i, on_color=i, end='', reset=i == 15)
     print(']')
 
     print()
@@ -495,11 +482,23 @@ def termcolor_demo_24bit():
     print()
 
 
+def get_term_width():
+    '''Get terminal width, there is https://gist.github.com/mr700/c73af70357ff8bcfc3250ee6c84e164d but it is overkill'''
+    try:
+        import shutil
+        return shutil.get_terminal_size(fallback=(80, 32)).columns  # @UndefinedVariable
+    except AttributeError:  # pragma: no cover
+        return 120          # pragma: no cover
+
+
 def termcolor_demo():
     '''Demonstrate this module's capabilities'''
     termcolor_demo_16()
     termcolor_demo_256()
-    termcolor_demo_24bit()
+    if get_term_width() >= 120:
+        termcolor_demo_24bit()
+    else:
+        print("Need terminal width of 120 or more for this part...")  # pragma: no cover
 
 
 def color_log_demo():
