@@ -95,24 +95,7 @@ COLORS = {
     'white': '97',
 }
 
-HIGHLIGHTS = {
-    'black': '40',
-    'red': '41',
-    'green': '42',
-    'yellow': '43',
-    'blue': '44',
-    'magenta': '45',
-    'cyan': '46',
-    'light_grey': '47',
-    'dark_grey': '100',
-    'light_red': '101',
-    'light_green': '102',
-    'light_yellow': '103',
-    'light_blue': '104',
-    'light_magenta': '105',
-    'light_cyan': '106',
-    'white': '107',
-}
+HIGHLIGHTS = dict((i[0], str(int(i[1]) + 10)) for i in COLORS.items())
 
 
 def color_fmt(color, colors16, cnum):
