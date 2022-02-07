@@ -40,7 +40,7 @@ import time
 __all__ = ['always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging', 'logging_basic_color_config',
            'COLOR_RESET_STR']
 
-__version__ = '0.9.2'
+__version__ = '0.9.2.1'
 __copyright__ = 'Copyright (c) 2008-2011 Volvox Development Team'
 __license__ = 'MIT'
 
