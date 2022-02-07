@@ -29,7 +29,7 @@ build: clean
 	# fix the image locations, version/tag detection would be nice
 	# Remove URLs
 	sed -i 's#https://gitlab.com/dngunchev/termcolor_dg/.*/##g' README.md
-	sed -i 's#](\([a-zA-Z0-9/:_%]*\.png\)#](https://gitlab.com/dngunchev/termcolor_dg/-/blob/v0.9.2.1/\1#g' README.md
+	sed -i 's#](\([a-zA-Z0-9/:_%]*\.png\)#](https://gitlab.com/dngunchev/termcolor_dg/-/raw/master/\1#g' README.md
 	python -m build
 	sed -i 's#https://gitlab.com/dngunchev/termcolor_dg/.*/##g' README.md
 	# python setup.py sdist  # gives more source formats, but can't upload more than one anyways
