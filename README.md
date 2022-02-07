@@ -38,12 +38,14 @@ Example
 
 Colors demo screenshot (`python -m termcolor_dg`):
 --------------------------------------------------
-![colors screenshot](colors.png)
+
+![colors.png](colors.png "Colors demo")
 
 
 Colored logs demo screenshot (`python -m termcolor_dg logs`):
 -------------------------------------------------------------
-![colored logs screenshot](color_logs.png)
+
+![color_logs.png](color_logs.png "Colorized logs demo")
 
 
 Environment variables
@@ -132,8 +134,9 @@ You may want to check out:
 
 - 📑 [Terminal Colors](https://github.com/termstandard/colors) discussion with examples
 - 📑 [ANSI/VT100 Terminal Control Escape Sequences](https://www2.ccs.neu.edu/research/gpc/VonaUtils/vona/terminal/vtansi.htm)
-- 📑 [ANSI escape code](https://en.wikipedia.org/wiki/ANSI_escape_code) |
+- 📑 [ANSI escape code](https://en.wikipedia.org/wiki/ANSI_escape_code)
 - 📑 [Color codes cheatsheet](https://delameter.github.io/termcolor)
+- 📑 [MarkdownGuide - Basic Syntax](https://www.markdownguide.org/basic-syntax)
 
 
 Terminal properties support
