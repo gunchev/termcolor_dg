@@ -22,7 +22,7 @@ if sys.version_info[0] == 3:
     long = int  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
 
 
-class CapturedOutput(object):
+class CapturedOutput:
     '''Temporary replace sys.stdout and sys.stderr with io.StringIO or io.BytesIO'''
 
     def __init__(self):
@@ -38,11 +38,11 @@ class CapturedOutput(object):
         return False  # return True  # To stop any exception from propagating
 
     def get_output(self):
-        '''Get what was outputed so far'''
+        '''Get what was written so far'''
         return self._buf.getvalue()
 
 
-class Coffeine(object):
+class Coffeine:
     '''Temporary replace time.sleep() with pass'''
 
     def __init__(self):
@@ -57,7 +57,8 @@ class Coffeine(object):
         return False  # return True  # To stop any exception from propagating
 
 
-class TestPySrcModule(unittest.TestCase):
+class TestTermcolorDg(unittest.TestCase):
+    '''Test the termcolor_dg module'''
 
     def __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName=methodName)
@@ -74,7 +75,7 @@ class TestPySrcModule(unittest.TestCase):
     def test_main_exists(self):
         '''Check if main is defined in the module'''
         for fname in ('always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging',
-                      'logging_basic_color_config',  'monkey_unpatch_logging', 'monkey_unpatch_logging_format'):
+                      'logging_basic_color_config', 'monkey_unpatch_logging', 'monkey_unpatch_logging_format'):
             self.assertIn(fname, termcolor_dg.__dict__.keys(), '%r not defined?!?' % fname)
 
     def test_cprint_no_color(self):
@@ -197,7 +198,7 @@ class TestPySrcModule(unittest.TestCase):
 
     def test_color_demo(self):
         '''Check the log demo output'''
-        with CapturedOutput() as out, Coffeine() as a_stimulant:  # @UnusedVariable
+        with CapturedOutput() as out, Coffeine() as a_stimulant:  # @UnusedVariable pylint: disable=unused-variable
             termcolor_dg.termcolor_demo()
             output = out.get_output()
 
@@ -207,6 +208,7 @@ class TestPySrcModule(unittest.TestCase):
         self.assertEqual(output[-80:], tail, 'Bad output tailing 80 chars')
 
     def test_errors(self):
+        '''Check exceptions are thrown'''
         # Color exceptions
         with self.assertRaises(ValueError):
             termcolor_dg.always_colored('', 'invalid_color')

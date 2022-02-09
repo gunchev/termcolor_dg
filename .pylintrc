@@ -1,0 +1,12 @@
+[MESSAGES CONTROL]
+disable=
+    consider-using-f-string,
+    unspecified-encoding,
+    old-style-class
+
+[FORMAT]
+expected-line-ending-format=LF
+# Regexp for a line that is allowed to be longer than the limit.
+ignore-long-lines=^\s*(# )?<?https?://\S+>?$
+# Maximum number of characters on a single line.
+max-line-length=120

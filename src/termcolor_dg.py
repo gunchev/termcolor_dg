@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 # Copyright (c) 2008-2011 Volvox Development Team
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,6 +34,7 @@ from __future__ import absolute_import, print_function, division
 
 import logging
 import os
+import shutil
 import sys
 import time
 
@@ -115,8 +117,7 @@ def color_fmt(color, colors16, cnum):
     if isinstance(color, (list, tuple)):
         if len(color) == 3 and 0 <= color[0] <= 255 and 0 <= color[1] <= 255 and 0 <= color[2] <= 255:
             return '%d;2;%d;%d;%d' % (cnum, color[0], color[1], color[2])
-        else:
-            raise ValueError("Invalid color %r" % (color,))
+        raise ValueError("Invalid color %r" % (color,))
 
     raise TypeError("Unsupported color type %s" % type(color).__name__)
 
@@ -375,21 +376,22 @@ def termcolor_demo_16():
     print(' [' + '       Dark white         ', end=']')
     print(' [' + '     Underline green      ', end=']')
     print(' [' + '      Blink yellow        ', end=']\n')
-    print(' [' + colored('   Bold black on black    ', 'black',   'on_black',   attrs=['bold']), end=']')
-    print(' [' + colored('       Dark white         ', 'white',   attrs=['dark']), end=']')
-    print(' [' + colored('     Underline green      ', 'green',   attrs=['underline']), end=']')
-    print(' [' + colored('      Blink yellow        ', 'yellow',  attrs=['blink']), end=']\n')
+    print(' [' + colored('   Bold black on black    ', 'black', 'on_black', attrs=['bold']), end=']')
+    print(' [' + colored('       Dark white         ', 'white', attrs=['dark']), end=']')
+    print(' [' + colored('     Underline green      ', 'green', attrs=['underline']), end=']')
+    print(' [' + colored('      Blink yellow        ', 'yellow', attrs=['blink']), end=']\n')
 
-    print(' [' + colored('      Reversed blue       ', 'blue',    attrs=['reverse']), end=']')
+    print(' [' + colored('      Reversed blue       ', 'blue', attrs=['reverse']), end=']')
     print(' [' + colored('    Concealed Magenta     ', 'magenta', attrs=['concealed']), end=']')
-    print(' [' + colored('Bold underline reverse red', 'red',     attrs=['bold', 'underline', 'reverse']), end=']')
-    print(' [' + colored('Dark blink concealed white', 'white',   attrs=['dark', 'blink', 'concealed']), end=']\n')
+    print(' [' + colored('Bold underline reverse red', 'red', attrs=['bold', 'underline', 'reverse']), end=']')
+    print(' [' + colored('Dark blink concealed white', 'white', attrs=['dark', 'blink', 'concealed']), end=']\n')
     print(' [' + '      Reversed blue       ', end=']')
     print(' [' + '    Concealed Magenta     ', end=']')
     print(' [' + 'Bold underline reverse red', end=']')
     print(' [' + 'Dark blink concealed white', end=']\n')
 
     def all_combos(values):
+        '''Generate all combinations'''
         values = tuple(values)
         if values:
             for i in all_combos(values[1:]):
@@ -468,7 +470,6 @@ def termcolor_demo_24bit():
 def get_term_width():
     '''Get terminal width, there is https://gist.github.com/mr700/c73af70357ff8bcfc3250ee6c84e164d but it is overkill'''
     try:
-        import shutil
         return shutil.get_terminal_size(fallback=(80, 32)).columns  # @UndefinedVariable
     except AttributeError:  # pragma: no cover
         return 120          # pragma: no cover

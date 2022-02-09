@@ -13,6 +13,8 @@ test:
 	PYTHONPATH=src coverage run -m unittest discover --verbose -s test
 	# coverage combine  # Will fail if only one run...
 	coverage report -m --skip-empty
+	pylint2 $(shell git ls-files '*.py')
+	pylint $(shell git ls-files '*.py')
 
 
 .PHONY: clean
