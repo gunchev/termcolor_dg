@@ -456,8 +456,8 @@ def termcolor_demo_24bit():
     print('\r   ', end='')
     for step, char in enumerate(data):
         print(colored(char,
-                      rainbow_color(step - len(data) // 3 + i, len(data)),
-                      on_color=rainbow_color(step + i, len(data)), reset=False), end='')
+                      rainbow_color(step - len(data) // 3, len(data)),
+                      on_color=rainbow_color(step, len(data)), reset=False), end='')
         sys.stdout.flush()
         time.sleep(0.02)
         print(COLOR_RESET_STR, end='')
