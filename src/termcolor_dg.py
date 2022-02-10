@@ -242,7 +242,7 @@ def monkey_patch_logging_format():
             try:
                 return func(self, *args, **kwargs)
             except Exception as exc:  # pylint: disable=broad-except
-                return 'Unable to create log message with msg=%r, args=%r: %r' \
+                return 'Error logging msg=%r, args=%r: %r' \
                     % (getattr(self, 'msg', '?'), getattr(self, 'args', '?'), exc)
 
         return wrap
@@ -286,7 +286,7 @@ def monkey_patch_logging(color_on_terminal=True):
                     if record.levelno < logging.DEBUG:  # pylint: disable=fixme
                         output = colored(text=output, color='black', on_color='on_blue', attrs=['dark'])
                     elif record.levelno <= logging.DEBUG:  # pylint: disable=fixme
-                        output = colored(text=output, color='black', on_color=None, attrs=['dark'])
+                        output = colored(text=output, color='blue', on_color=None, attrs=['dark'])
                     elif record.levelno <= logging.INFO:
                         output = colored(text=output, color='green', on_color=None, attrs=['bold'])
                     elif record.levelno <= logging.WARNING:
@@ -297,9 +297,9 @@ def monkey_patch_logging(color_on_terminal=True):
                         output = colored(text=output, color='white', on_color='on_red', attrs=['bold'])
                     else:
                         output = colored(text=output, color='yellow', on_color='on_red',
-                                         attrs=['bold', 'blink', 'underline'])
+                                         attrs=['bold', 'underline'])
                     if tail:
-                        output += colored(text=tail, color='blue', attrs=['dark'])
+                        output += colored(text=tail, color='black', attrs=['dark'])
 
                     return output
 
@@ -500,17 +500,14 @@ def color_log_demo():
     log.warning('Warning')
     log.error('Error')
     log.critical('Critical')
-    log.error('', 1)  # the mistake is intentional pylint: disable=logging-too-many-args
+    log.error('x', 1)  # the mistake is intentional pylint: disable=logging-too-many-args
     log.info('%d', 1, 2)  # the mistake is intentional pylint: disable=logging-too-many-args
     log.debug('%d %d', 'a', 2)
-    print()
     try:
         raise TypeError('msg')
     except TypeError:
         log.exception('Exception')
-    print()
-    log.log(51, 'ABOVE CRITICAL! intentionally annoying, we should never see this IRL...')
-    print()
+    log.log(51, 'ABOVE CRITICAL!')
     log.info('Done.')
 
 

@@ -1,6 +1,10 @@
 termcolor_dg changes
 ====================
 
+?.?.? (2022-0?-??)
+- Adjust the log color scheme.
+- pylint fixes in the color demo
+
 0.9.2 (2022-02-07)
 ------------------
 - Combine color, background and attributes in single escape sequence
