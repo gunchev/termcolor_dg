@@ -164,20 +164,20 @@ class TestTermcolorDg(unittest.TestCase):
         self.assertEqual(output[:len(head_expected)], head_expected)
         tail_expected = ' logger\x1b[0m\n'
         self.assertEqual(output[-len(tail_expected):], tail_expected)
-        output_len = 1694
+        output_len = 1574
         if sys.version_info[:2] == (3, 10):
-            output_len = 1699
+            output_len = 1579
         elif sys.version_info[:2] == (3, 6):
-            output_len = 1697
+            output_len = 1577
         elif sys.version_info[:2] == (2, 7):
-            output_len = 1697
+            output_len = 1577
         self.assertEqual(len(output), output_len)  # Well...
         split_chunks = (
             (10, 'DEBUG,'),
-            (100, "TypeError('%d"),
-            (101, 'format:'),
-            (102, 'a'),
-            (-4, 'Done.\x1b[0m\x1b[34;2m'),
+            (88, "TypeError('%d"),
+            (89, 'format:'),
+            (90, 'a'),
+            (-4, 'Done.\x1b[0m\x1b[30;2m'),
             (-1, 'logger\x1b[0m')
         )
         output_split = output.split()

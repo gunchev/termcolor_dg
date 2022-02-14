@@ -1,9 +1,10 @@
 termcolor_dg changes
 ====================
 
-?.?.? (2022-0?-??)
+0.9.3 (2022-02-14)
+------------------
 - Adjust the log color scheme.
-- pylint fixes in the color demo
+- pylint fixes in the color demo.
 
 0.9.2 (2022-02-07)
 ------------------
