@@ -157,7 +157,7 @@ Assume this information is outdated.
 | **Windows**      |   ❌   |  ❌  |     ❌    |    ❌   |    ✅   |   ✅[^4]  |     ❓     |      ✅      |
 | **PuTTY**        | ✅[^2] |  ✅  |     ✅    |  ✅[^1] |    ✅   |     ❌    |     ✅     |      ✅      |
 | **Cygwin SSH**   |   ✅   |  ❌  |    color  |  color  |  color  |     ✅    |     ❓     |      ❓      |
-| **Mac Terminal** |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
+| **Mac Terminal** |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ❓      |
 | **iTerm2**       |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
 
 [^1]: Disabled by default

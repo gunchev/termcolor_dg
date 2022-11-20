@@ -347,7 +347,7 @@ def termcolor_demo_16():
     max_len = max(len(color) for color in colors)
 
     print(RESET_STR, end='')
-    print(('--- 16 color mode test on TERM=%r' % os.getenv('TERM')).ljust(119, '-'))
+    print(('--- 16 color mode test on TERM=%r ' % os.getenv('TERM')).ljust(119, '-'))
 
     for i, color in enumerate(colors):
         print(' ', end='')
