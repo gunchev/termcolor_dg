@@ -42,7 +42,7 @@ import time
 __all__ = ['always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging', 'logging_basic_color_config',
            'COLOR_RESET_STR']
 
-__version__ = '0.9.3.1'
+__version__ = '0.9.3.2'
 __copyright__ = 'Copyright (c) 2008-2011 Volvox Development Team'
 __license__ = 'MIT'
 
@@ -62,8 +62,8 @@ if sys.version_info >= (3, 0):  # pragma: no cover
     basestring = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
     # long = int  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
 
-DISABLED = os.getenv('ANSI_COLORS_DISABLED') is not None \
-    or not sys.stdout.isatty() and os.getenv('ANSI_COLORS_FORCE') is None
+DISABLED = not (os.getenv('ANSI_COLORS_DISABLED') or os.getenv('NO_COLOR')) \
+    and (not sys.stdout.isatty() or os.getenv('ANSI_COLORS_FORCE'))
 
 COLOR_RESET_STR = '\033[0m'
 ERASE_EOL_STR = '\033[2K'

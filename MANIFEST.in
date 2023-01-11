@@ -3,12 +3,16 @@ global-exclude *.py[cod]
 
 # Project specific #
 ####################
-include CHANGES.md
 include color_logs.png
 include colors.png
-include LICENSE
 include pyproject.toml
+include LICENSE
+include CHANGES.md
 include README.md
+include INSTALL.md
+include TODO.md
 
 include tox.ini
 include Makefile
+include termcolor_dg.spec
+include .pylintrc

@@ -57,6 +57,10 @@ Environment variables
 **ANSI_COLORS_DISABLED**
   if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**.
 
+**NO_COLOR**
+  if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**.
+  see https://no-color.org/
+
 If none of the environment variables is set the colors are used
 only if the ``stdout`` is attached to a terminal: ``sys.stdout.isatty()``.
 

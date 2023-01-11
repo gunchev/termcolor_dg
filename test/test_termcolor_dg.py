@@ -7,6 +7,7 @@ from __future__ import absolute_import, print_function, division
 
 import io
 import logging
+import re
 import sys
 import time
 import unittest
@@ -164,25 +165,45 @@ class TestTermcolorDg(unittest.TestCase):
         self.assertEqual(output[:len(head_expected)], head_expected)
         tail_expected = ' logger\x1b[0m\n'
         self.assertEqual(output[-len(tail_expected):], tail_expected)
-        output_len = 1574
-        if sys.version_info[:2] == (3, 10):
-            output_len = 1579
-        elif sys.version_info[:2] == (3, 6):
-            output_len = 1577
-        elif sys.version_info[:2] == (2, 7):
-            output_len = 1577
-        self.assertEqual(len(output), output_len)  # Well...
-        split_chunks = (
-            (10, 'DEBUG,'),
-            (88, "TypeError('%d"),
-            (89, 'format:'),
-            (90, 'a'),
-            (-4, 'Done.\x1b[0m\x1b[30;2m'),
-            (-1, 'logger\x1b[0m')
-        )
-        output_split = output.split()
-        for chunk_no, chunk_value in split_chunks:
-            self.assertEqual(output_split[chunk_no], chunk_value)
+        # Blank dates and time, remove file paths
+        out_lines = [re.sub(r'\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d,\d\d\d', 'YYYY-mm-dd HH:MM:SS,mss', i)
+                     for i in output.splitlines()
+                     if ' File ' not in i]
+        # Remove file names and line numbers
+        out_lines = [re.sub(r'# [^ ]+ ', '# src.py:123 ', i)
+                     for i in out_lines]
+
+        replacements = (  # Python version specific exception wording
+            ("string formatting',)", "string formatting')"),
+            ("a number is required, not str')", "a real number is required, not str')"),
+            ("a number is required, not str',)", "a real number is required, not str')"))
+
+        for replacement in replacements:
+            out_lines = [i.replace(replacement[0], replacement[1]) for i in out_lines]
+
+        # self.assertEqual(''.join(out_lines), 1466)
+        expected_lines = [
+            'Logging test... levels and exception:',
+            '\x1b[30;44;2mYYYY-mm-dd HH:MM:SS,mss Not set, below DEBUG, normally not show...\x1b[0m\x1b[30;2m  ' \
+                '# src.py:123 logger\x1b[0m',
+            '\x1b[34;2mYYYY-mm-dd HH:MM:SS,mss Debug\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
+            '\x1b[32;1mYYYY-mm-dd HH:MM:SS,mss Info\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
+            '\x1b[33;1mYYYY-mm-dd HH:MM:SS,mss Warning\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
+            '\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Error\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
+            '\x1b[97;41;1mYYYY-mm-dd HH:MM:SS,mss Critical\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
+            "\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Error logging msg='x', args=(1,): TypeError('not all arguments " \
+                "converted during string formatting')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
+            "\x1b[32;1mYYYY-mm-dd HH:MM:SS,mss Error logging msg='%d', args=(1, 2): TypeError('not all arguments " \
+                "converted during string formatting')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
+            "\x1b[34;2mYYYY-mm-dd HH:MM:SS,mss Error logging msg='%d %d', args=('a', 2): TypeError('%d format: " \
+                "a real number is required, not str')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
+            '\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Exception\x1b[0m\x1b[30;2m  # src.py:123 logger',
+            '\x1b[97;45;1m\x1b[2KTraceback (most recent call last):',
+            "\x1b[2K    raise TypeError('msg')",
+            '\x1b[2KTypeError: msg\x1b[0m\x1b[0m',
+            '\x1b[33;41;1;4mYYYY-mm-dd HH:MM:SS,mss ABOVE CRITICAL!\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
+            '\x1b[32;1mYYYY-mm-dd HH:MM:SS,mss Done.\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m']
+        self.assertEqual(out_lines, expected_lines)
 
         # cover the "no tail" logging case
         log_record = logging.LogRecord('name', logging.INFO, 'pathname', 1, 'test', [], None)
