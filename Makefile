@@ -9,6 +9,7 @@ help:
 	@echo
 	@echo "Available targets:"
 	@echo
+	@echo  "    help:               this help"
 	@echo  "    develop:            run setup.py develop -O1 --install-dir ."
 	@echo  "    test:               run all tests"
 	@echo  "    clean:              clean the build tree"
