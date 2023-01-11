@@ -4,7 +4,7 @@
 
 Name:           python-%{srcname}
 Version:        0.9.3.2
-Release:        0%{?dist}
+Release:        1%{?dist}
 Summary:        ANSI Color formatting for terminal output and log coloring.
 License:        MIT
 URL:            https://gitlab.com/dngunchev/%{srcname}
@@ -44,6 +44,20 @@ Python 2 support is present for legacy projects and because
 it is not too much work and I have to use it for now.
 
 
+%package -n python%{python3_pkgversion}-%{srcname}-bin
+Summary:  %{summary}
+Requires: python%{python3_pkgversion}-%{srcname}
+
+%description -n python%{python3_pkgversion}-%{srcname}-bin
+binary files for %{srcname}, you can simply:
+
+    python -m termcolor_dg
+
+or
+
+    python -m termcolor_dg logs
+
+
 %prep
 %autosetup -p1 -n %{srcname}-%{version}
 
@@ -64,15 +78,20 @@ make test
 %files -n  python%{python3_pkgversion}-%{srcname}
 %license LICENSE
 %doc CHANGES.md README.md INSTALL.md TODO.md
-# binaries
-%{_bindir}/termcolor_dg_demo
-%{_bindir}/termcolor_dg_demo_log
-# For noarch packages: sitelib
 %{python3_sitelib}/%{srcname}.py
 %{python3_sitelib}/%{srcname}-%{version}-py%{python3_version}.egg-info/
 %{python3_sitelib}/__pycache__/%{srcname}*
 
 
+%files -n  python%{python3_pkgversion}-%{srcname}-bin
+# binaries
+%{_bindir}/termcolor_dg_demo
+%{_bindir}/termcolor_dg_demo_log
+
+
 %changelog
+* Wed Jan 11 2023 Doncho N. Gunchev <dgunchev@gmail.com> - 0.9.3.2-1
+- Move the executables to -bin subpackage. Not too useful.
+
 * Wed Jan 11 2023 Doncho N. Gunchev <dgunchev@gmail.com> - 0.9.3.2-0
 - Initial package
