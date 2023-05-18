@@ -1,5 +1,5 @@
 TOP := $(shell dirname "$(abspath $(lastword $(MAKEFILE_LIST)))")
-
+PYLINT_RCFILE ?= .pylintrc
 
 .PHONY: help
 help:
@@ -37,9 +37,9 @@ test:
 	PYTHONPATH=src coverage run -m unittest discover --verbose -s test
 	# coverage combine  # Will fail if only one run...
 	coverage report -m --skip-empty
-	# pylint2 $(shell git ls-files '*.py')
+	# pylint2 --rcfile .pylintrc2 $(shell git ls-files '*.py')
 	# pylint $(shell git ls-files '*.py')
-	pylint *.py */*.py
+	pylint --rcfile $(PYLINT_RCFILE) *.py */*.py
 
 
 .PHONY: clean
@@ -53,13 +53,15 @@ clean:
 
 .PHONY: build
 build: clean
-	# fix the image locations, version/tag detection would be nice
+	# https://stackoverflow.com/a/46875147 - Fix the image locations, version/tag detection would be nice.
 	# Remove URLs
-	sed -i 's#https://gitlab.com/dngunchev/termcolor_dg/.*/##g' README.md
-	sed -i 's#](\([a-zA-Z0-9/:_%]*\.png\)#](https://gitlab.com/dngunchev/termcolor_dg/-/raw/master/\1#g' README.md
+	sed -i 's#https://raw.githubusercontent.com/gunchev/termcolor_dg/.*/##g' README.md
+	# Redirect to github
+	sed -i 's#](\([a-zA-Z0-9/:_%]*\.png\)#](https://raw.githubusercontent.com/gunchev/termcolor_dg/master/\1#g' README.md
 	python -m build
-	sed -i 's#https://gitlab.com/dngunchev/termcolor_dg/.*/##g' README.md
-	# python setup.py sdist  # gives more source formats, but can't upload more than one anyways
+	# Remove URLs
+	sed -i 's#https://raw.githubusercontent.com/gunchev/termcolor_dg/.*/##g' README.md
+	# With "python setup.py sdist" we can get more source formats, but can't upload more than one anyways.
 
 
 .PHONY: test_install

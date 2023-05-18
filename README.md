@@ -5,9 +5,9 @@ termcolor_dg
 📑 [ANSI escape code](https://en.wikipedia.org/wiki/ANSI_escape_code) |
 📑 [Color codes cheatsheet](https://delameter.github.io/termcolor)
 
-ANSI Color formatting for terminal output and log coloring. Supports 16 color, 256 color and 24-bit color modes.
+ANSI Color formatting for terminal output and log coloring. Supports 16 colors, 256 colors and 24-bit color modes.
 
-Python 2 support is present for legacy projects and because it is not too much work and I have to use it for now.
+Python 2 support is present for legacy projects, and because it is not too much work and I have to use it for now.
 
 
 Example
@@ -51,15 +51,15 @@ Colored logs demo screenshot (`python -m termcolor_dg logs`):
 Environment variables
 ---------------------
 
-**ANSI_COLORS_FORCE**
+- **ANSI_COLORS_FORCE**
   if set to anything, even empty string, color escape sequences will be added.
 
-**ANSI_COLORS_DISABLED**
+- **ANSI_COLORS_DISABLED**
   if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**.
 
-**NO_COLOR**
-  if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**.
-  see https://no-color.org/
+- **NO_COLOR**
+  if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**,
+  see https://no-color.org/.
 
 If none of the environment variables is set the colors are used
 only if the ``stdout`` is attached to a terminal: ``sys.stdout.isatty()``.
@@ -68,24 +68,24 @@ only if the ``stdout`` is attached to a terminal: ``sys.stdout.isatty()``.
 Text properties
 ---------------
 
-| Text colors   | Text highlights | Alt Text highlights  | Attributes |
-| ------------- | --------------- | -------------------- | ---------- |
-| black         | black           | on_black             | bold       |
-| red           | red             | on_red               | dark       |
-| green         | green           | on_green             | underline  |
-| yellow        | yellow          | on_yellow            | blink      |
-| blue          | blue            | on_blue              | reverse    |
-| magenta       | magenta         | on_magenta           | concealed  |
-| cyan          | cyan            | on_cyan              |            |
-| light_grey    | light_grey      | on_light_grey        |            |
-| dark_grey     | dark_grey       | on_dark_grey         |            |
-| light_red     | light_red       | on_light_red         |            |
-| light_green   | light_green     | on_light_green       |            |
-| light_yellow  | light_yellow    | on_light_yellow      |            |
-| light_blue    | light_blue      | on_light_blue        |            |
-| light_magenta | light_magenta   | on_light_magenta     |            |
-| light_cyan    | light_cyan      | on_light_cyan        |            |
-| white         | white           | on_white             |            |
+| Text colors   | Text highlights | Alt Text highlights | Attributes |
+|---------------|-----------------|---------------------|------------|
+| black         | black           | on_black            | bold       |
+| red           | red             | on_red              | dark       |
+| green         | green           | on_green            | underline  |
+| yellow        | yellow          | on_yellow           | blink      |
+| blue          | blue            | on_blue             | reverse    |
+| magenta       | magenta         | on_magenta          | concealed  |
+| cyan          | cyan            | on_cyan             |            |
+| light_grey    | light_grey      | on_light_grey       |            |
+| dark_grey     | dark_grey       | on_dark_grey        |            |
+| light_red     | light_red       | on_light_red        |            |
+| light_green   | light_green     | on_light_green      |            |
+| light_yellow  | light_yellow    | on_light_yellow     |            |
+| light_blue    | light_blue      | on_light_blue       |            |
+| light_magenta | light_magenta   | on_light_magenta    |            |
+| light_cyan    | light_cyan      | on_light_cyan       |            |
+| white         | white           | on_white            |            |
 
 
 Functions
@@ -147,22 +147,22 @@ Terminal properties support
 ---------------------------
 Assume this information is outdated.
 
-| Terminal         |  bold  | dark | underline |  blink  | reverse | concealed | 256 colors | 24-bit color |
-| :--------------- | :----: | :--: | :-------: | :-----: | :-----: | :-------: | :--------: | :----------: |
-| **linux**        | ❌[^3] |❌[^3]|   ✅[^3]  |  ✅[^3] |    ✅   |     ❌    |     ❌     |      ❌      |
-| **konsole**      |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
-| **terminator**   |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
-| **kitty**        |   ✅   |  ✅  |     ✅    |    ✅   |    ✅   |     ❌    |     ✅     |      ✅      |
-| **xterm**        |   ✅   |  ❌  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
-| **rxvt**         |   ✅   |  ❌  |     ✅    |    ✅   |    ✅   |     ❌    |     ✅     |      ❌      |
-| **dtterm**       |   ✅   |  ✅  |     ✅    | reverse |    ✅   |     ✅    |     ❓     |      ❓      |
-| **teraterm**     | reverse|  ❌  |     ✅    | rev/red |    ✅   |     ❌    |     ❓     |      ❓      |
-| **aixterm**      | normal |  ❌  |     ✅    |    ❌   |    ✅   |     ✅    |     ❓     |      ❓      |
-| **Windows**      |   ❌   |  ❌  |     ❌    |    ❌   |    ✅   |   ✅[^4]  |     ❓     |      ✅      |
-| **PuTTY**        | ✅[^2] |  ✅  |     ✅    |  ✅[^1] |    ✅   |     ❌    |     ✅     |      ✅      |
-| **Cygwin SSH**   |   ✅   |  ❌  |    color  |  color  |  color  |     ✅    |     ❓     |      ❓      |
-| **Mac Terminal** |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ❓      |
-| **iTerm2**       |   ✅   |  ❓  |     ✅    |    ✅   |    ✅   |     ✅    |     ✅     |      ✅      |
+| Terminal         |  bold   | dark  | underline |  blink  | reverse | concealed | 256 colors | 24-bit color |
+|:-----------------|:-------:|:-----:|:---------:|:-------:|:-------:|:---------:|:----------:|:------------:|
+| **linux**        |  ❌[^3]  | ❌[^3] |   ✅[^3]   |  ✅[^3]  |    ✅    |     ❌     |     ❌      |      ❌       |
+| **konsole**      |    ✅    |   ✅   |     ✅     |    ✅    |    ✅    |     ✅     |     ✅      |      ✅       |
+| **terminator**   |    ✅    |   ✅   |     ✅     |    ✅    |    ✅    |     ✅     |     ✅      |      ✅       |
+| **kitty**        |    ✅    |   ✅   |     ✅     |    ✅    |    ✅    |     ❌     |     ✅      |      ✅       |
+| **xterm**        |    ✅    |   ❌   |     ✅     |    ✅    |    ✅    |     ✅     |     ✅      |      ✅       |
+| **rxvt**         |    ✅    |   ❌   |     ✅     |    ✅    |    ✅    |     ❌     |     ✅      |      ❌       |
+| **dtterm**       |    ✅    |   ✅   |     ✅     | reverse |    ✅    |     ✅     |     ❓      |      ❓       |
+| **teraterm**     | reverse |   ❌   |     ✅     | rev/red |    ✅    |     ❌     |     ❓      |      ❓       |
+| **aixterm**      | normal  |   ❌   |     ✅     |    ❌    |    ✅    |     ✅     |     ❓      |      ❓       |
+| **Windows**      |    ❌    |   ❌   |     ❌     |    ❌    |    ✅    |   ✅[^4]   |     ❓      |      ✅       |
+| **PuTTY**        |  ✅[^2]  |   ✅   |     ✅     |  ✅[^1]  |    ✅    |     ❌     |     ✅      |      ✅       |
+| **Cygwin SSH**   |    ✅    |   ❌   |   color   |  color  |  color  |     ✅     |     ❓      |      ❓       |
+| **Mac Terminal** |    ✅    |   ❓   |     ✅     |    ✅    |    ✅    |     ✅     |     ✅      |      ❓       |
+| **iTerm2**       |    ✅    |   ❓   |     ✅     |    ✅    |    ✅    |     ✅     |     ✅      |      ✅       |
 
 [^1]: Disabled by default
 
@@ -171,4 +171,3 @@ Assume this information is outdated.
 [^3]: See [VGA text mode](https://en.wikipedia.org/wiki/VGA_text_mode)
 
 [^4]: See [Add support for the "concealed" graphic rendition attribute #6876 ](https://github.com/microsoft/terminal/issues/6876)
-

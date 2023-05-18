@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''termcolor_dg unit tests'''
+"""termcolor_dg unit tests"""
 
 from __future__ import absolute_import, print_function, division
 
@@ -24,7 +24,7 @@ if sys.version_info[0] == 3:
 
 
 class CapturedOutput:
-    '''Temporary replace sys.stdout and sys.stderr with io.StringIO or io.BytesIO'''
+    """Temporary replace sys.stdout and sys.stderr with io.StringIO or io.BytesIO"""
 
     def __init__(self):
         self._buf = io.BytesIO() if sys.version_info < (3, 0) else io.StringIO()
@@ -36,15 +36,15 @@ class CapturedOutput:
 
     def __exit__(self, ex_type, ex_value, ex_traceback):  # @UnusedVariable
         sys.stderr, sys.stdout = self._stderr, self._stdout
-        return False  # return True  # To stop any exception from propagating
+        return False  # return True # To stop any exception from propagating
 
     def get_output(self):
-        '''Get what was written so far'''
+        """Get what was written so far"""
         return self._buf.getvalue()
 
 
 class Coffeine:
-    '''Temporary replace time.sleep() with pass'''
+    """Temporary replace time.sleep() with pass"""
 
     def __init__(self):
         self._sleep = time.sleep
@@ -55,11 +55,11 @@ class Coffeine:
 
     def __exit__(self, ex_type, ex_value, ex_traceback):  # @UnusedVariable
         time.sleep = self._sleep
-        return False  # return True  # To stop any exception from propagating
+        return False  # return True # To stop any exception from propagating
 
 
 class TestTermcolorDg(unittest.TestCase):
-    '''Test the termcolor_dg module'''
+    """Test the termcolor_dg module"""
 
     def __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName=methodName)
@@ -69,18 +69,24 @@ class TestTermcolorDg(unittest.TestCase):
         unittest.TestCase.setUp(self)
         termcolor_dg.DISABLED = False
 
+        def get_term_width():
+            """Return a fake width of the terminal"""
+            return 120
+
+        termcolor_dg.get_term_width = get_term_width
+
     def tearDown(self):
         unittest.TestCase.tearDown(self)
         termcolor_dg.DISABLED = self._disabled
 
     def test_main_exists(self):
-        '''Check if main is defined in the module'''
+        """Check if main is defined in the module"""
         for fname in ('always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging',
                       'logging_basic_color_config', 'monkey_unpatch_logging', 'monkey_unpatch_logging_format'):
             self.assertIn(fname, termcolor_dg.__dict__.keys(), '%r not defined?!?' % fname)
 
     def test_cprint_no_color(self):
-        '''Check if main is printing the proper string'''
+        """Check if main is printing the proper string"""
         with CapturedOutput() as out:
             termcolor_dg.cprint('test')
             output = out.get_output()
@@ -88,14 +94,14 @@ class TestTermcolorDg(unittest.TestCase):
 
     # @unittest.skipIf(not sys.stdout.isatty(), 'Not testing on non-tty')
     def test_cprint(self):
-        '''Check if main is printing the proper string'''
+        """Check if main is printing the proper string"""
         with CapturedOutput() as out:
             termcolor_dg.cprint('test')
             output = out.get_output()
         self.assertEqual(output, 'test\n')
 
     def test_colored(self):
-        '''Basics'''
+        """Basics"""
         self.assertEqual(termcolor_dg.colored('test', 'red'), '\x1b[31mtest\x1b[0m')
         self.assertEqual(termcolor_dg.colored('test', color='red'), '\x1b[31mtest\x1b[0m')
         self.assertEqual(termcolor_dg.colored('test', 2), '\x1b[38;5;2mtest\x1b[0m')
@@ -112,7 +118,7 @@ class TestTermcolorDg(unittest.TestCase):
         self.assertEqual(termcolor_dg.colored('test', 'red'), 'test')
 
     def test_always_colored(self):
-        '''Basics'''
+        """Basics"""
         self.assertEqual(termcolor_dg.always_colored('test', 'red'), '\x1b[31mtest\x1b[0m')
         self.assertEqual(termcolor_dg.always_colored('test', color='red'), '\x1b[31mtest\x1b[0m')
         self.assertEqual(termcolor_dg.always_colored('test', 2), '\x1b[38;5;2mtest\x1b[0m')
@@ -127,7 +133,7 @@ class TestTermcolorDg(unittest.TestCase):
                          '\x1b[31;44;1mtest')
 
     def test_rainbow_color(self):
-        '''Test rainbow_color'''
+        """Test rainbow_color"""
         self.assertEqual(termcolor_dg.rainbow_color(0, 18), (255, 0, 0))
         self.assertEqual(termcolor_dg.rainbow_color(1, 18), (255, 85, 0))
         self.assertEqual(termcolor_dg.rainbow_color(2, 18), (255, 170, 0))
@@ -154,7 +160,7 @@ class TestTermcolorDg(unittest.TestCase):
             termcolor_dg.rainbow_color(5, 2)
 
     def test_log_demo(self):
-        '''Check the log demo output'''
+        """Check the log demo output"""
         with CapturedOutput() as out:
             termcolor_dg.color_log_demo()
             output = out.get_output()
@@ -218,18 +224,20 @@ class TestTermcolorDg(unittest.TestCase):
         termcolor_dg.DISABLED = False
 
     def test_color_demo(self):
-        '''Check the log demo output'''
+        """Check the log demo output"""
         with CapturedOutput() as out, Coffeine() as a_stimulant:  # @UnusedVariable pylint: disable=unused-variable
             termcolor_dg.termcolor_demo()
             output = out.get_output()
 
+        if len(output) != 477595:
+            print(output)
         self.assertEqual(len(output), 477595, "Unexpected output size")
         self.assertEqual(output[:33], '\x1bc--- 16 color mode test on TERM=', 'Bad output start')
         tail = ';40m=\x1b[0m\x1b[38;2;0;27;255;48;2;255;0;27m=\x1b[0m\x1b[38;2;0;13;255;48;2;255;0;13m=\x1b[0m\n'
         self.assertEqual(output[-80:], tail, 'Bad output tailing 80 chars')
 
     def test_errors(self):
-        '''Check exceptions are thrown'''
+        """Check exceptions are thrown"""
         # Color exceptions
         with self.assertRaises(ValueError):
             termcolor_dg.always_colored('', 'invalid_color')
