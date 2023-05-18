@@ -14,25 +14,23 @@ Example
 -------
 
 ```python
->>> from termcolor_dg import colored, cprint
->>>
->>> print(colored('Hello, World!', 'light_red', 'on_blue'))
->>> cprint('Hello, World!', 'blue', 'on_light_red', ['reverse', 'blink'])
->>>
->>> print_red_on_cyan = lambda x: cprint(x, 'red', 'on_cyan')
->>> print_red_on_cyan('Hello, World!')
->>>
->>> for i in range(10):
->>>     cprint(str(i), 'magenta', end=' ' if i != 9 else '\n')
->>>
->>> import sys
->>> cprint("Attention!", 196, attrs=('bold'), file=sys.stderr)  # 256 color mode
->>> cprint("Attention!", (255, 0, 0), attrs=('bold'), file=sys.stderr)  # 24 bit color mode
->>>
->>> import logging
->>> from termcolor_dg import logging_basic_color_config
->>> logging_basic_color_config()
->>> logging.log(logging.INFO, 'test')
+from termcolor_dg import colored, cprint
+
+print(colored('Hello, World!', 'light_red', 'on_blue'))
+cprint('Hello, World!', 'blue', 'on_light_red', ['reverse', 'blink'])
+print_red_on_cyan = lambda x: cprint(x, 'red', 'on_cyan')
+print_red_on_cyan('Hello, World!')
+for i in range(10):
+  cprint(str(i), 'magenta', end=' ' if i != 9 else '\n')
+import sys
+
+cprint("Attention!", 196, attrs='bold', file=sys.stderr)  # 256 color mode
+cprint("Attention!", (255, 0, 0), attrs='bold', file=sys.stderr)  # 24-bit color mode
+import logging
+from termcolor_dg import logging_basic_color_config
+
+logging_basic_color_config()
+logging.log(logging.INFO, 'test')
 ```
 
 
@@ -51,14 +49,14 @@ Colored logs demo screenshot (`python -m termcolor_dg logs`):
 Environment variables
 ---------------------
 
-- **ANSI_COLORS_FORCE**
-  if set to anything, even empty string, color escape sequences will be added.
+- **ANSI_COLORS_FORCE**:
+  If set to anything, even empty string, color escape sequences will be added.
 
-- **ANSI_COLORS_DISABLED**
-  if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**.
+- **ANSI_COLORS_DISABLED**:
+  If set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**.
 
-- **NO_COLOR**
-  if set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**,
+- **NO_COLOR**:
+  If set to anything no coloring will be performed, overrides **ANSI_COLORS_FORCE**,
   see https://no-color.org/.
 
 If none of the environment variables is set the colors are used

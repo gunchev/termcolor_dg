@@ -3,12 +3,12 @@
 %global srcname termcolor_dg
 
 Name:           python-%{srcname}
-Version:        0.9.3.3
+Version:        1.0.0
 Release:        0%{?dist}
 Summary:        ANSI Color formatting for terminal output and log coloring.
 License:        MIT
 URL:            https://github.com/gunchev/termcolor_dg/%{srcname}
-Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/v%{version}.tar.gz
+Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/v%{version}.tar.gz?name=%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -90,8 +90,9 @@ make test
 
 
 %changelog
-* Thu May 18 2023 Doncho N. Gunchev <dgunchev@gmail.com> - 0.9.3.3-0
+* Thu May 25 2023 Doncho N. Gunchev <dgunchev@gmail.com> - 1.0.0-0
 - Fix logging.basicConfig has no disable_existing_loggers argument.
+- fix DISABLED detection
 
 * Wed Jan 11 2023 Doncho N. Gunchev <dgunchev@gmail.com> - 0.9.3.2-1
 - Move the executables to -bin subpackage. Not too useful.

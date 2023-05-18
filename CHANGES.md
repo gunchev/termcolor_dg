@@ -1,15 +1,15 @@
 termcolor_dg changes
 ====================
 
-0.9.3.3 (2023-05-18)
---------------------
+1.0.0 (2023-05-25)
+------------------
 
 - fix DISABLED detection
 - logging.basicConfig has no disable_existing_loggers argument.
 - move back to GitHub, workflows does work and is free.
 
-0.9.3 (2022-02-14)
-------------------
+0.9.3.1 (2022-02-14)
+--------------------
 
 - Adjust the log color scheme.
 - pylint fixes in the color demo.

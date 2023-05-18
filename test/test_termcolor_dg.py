@@ -7,6 +7,7 @@ from __future__ import absolute_import, print_function, division
 
 import io
 import logging
+import os
 import re
 import sys
 import time
@@ -116,6 +117,8 @@ class TestTermcolorDg(unittest.TestCase):
 
         termcolor_dg.DISABLED = True
         self.assertEqual(termcolor_dg.colored('test', 'red'), 'test')
+        termcolor_dg.DISABLED = False
+        self.assertNotEqual(termcolor_dg.colored('test', 'red'), 'test')
 
     def test_always_colored(self):
         """Basics"""
@@ -225,11 +228,13 @@ class TestTermcolorDg(unittest.TestCase):
 
     def test_color_demo(self):
         """Check the log demo output"""
+        os.environ['ANSI_COLORS_FORCE'] = '1'
         with CapturedOutput() as out, Coffeine() as a_stimulant:  # @UnusedVariable pylint: disable=unused-variable
             termcolor_dg.termcolor_demo()
             output = out.get_output()
 
         if len(output) != 477595:
+            print("Bad output, len =", len(output))
             print(output)
         self.assertEqual(len(output), 477595, "Unexpected output size")
         self.assertEqual(output[:33], '\x1bc--- 16 color mode test on TERM=', 'Bad output start')

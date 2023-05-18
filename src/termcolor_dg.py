@@ -42,7 +42,7 @@ import time
 __all__ = ['always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging', 'logging_basic_color_config',
            'COLOR_RESET_STR']
 
-__version__ = '0.9.3.3'
+__version__ = '1.0.0'
 __copyright__ = 'Copyright (c) 2008-2011 Volvox Development Team'
 __license__ = 'MIT'
 
@@ -477,7 +477,7 @@ def termcolor_demo():
     """Demonstrate this module's capabilities"""
     termcolor_demo_16()
     termcolor_demo_256()
-    if get_term_width() >= 120:
+    if get_term_width() >= 120 or os.getenv('ANSI_COLORS_FORCE') is not None:
         termcolor_demo_24bit()
     else:
         print("Need terminal width of 120 or more for this part...")  # pragma: no cover
