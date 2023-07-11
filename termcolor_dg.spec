@@ -8,7 +8,7 @@ Release:        0%{?dist}
 Summary:        ANSI Color formatting for terminal output and log coloring.
 License:        MIT
 URL:            https://github.com/gunchev/termcolor_dg/%{srcname}
-Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/v%{version}.tar.gz?name=%{srcname}-%{version}.tar.gz
+Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/%{version}.tar.gz?name=%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
