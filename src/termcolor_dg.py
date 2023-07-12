@@ -59,6 +59,7 @@ __credits__ = ['Edmund Huber', 'Lukasz Balcerzak', 'Hendrik Buschmeier', 'Nat Me
 if sys.version_info >= (3, 0):  # pragma: no cover
     # raw_input = input  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
     # unicode = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    # noinspection PyShadowingBuiltins
     basestring = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
     # long = int  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
 
@@ -468,6 +469,7 @@ def termcolor_demo_24bit():
 def get_term_width():
     """Get terminal width, https://gist.github.com/mr700/c73af70357ff8bcfc3250ee6c84e164d, is an overkill."""
     try:
+        # noinspection PyUnresolvedReferences
         return shutil.get_terminal_size(fallback=(80, 32)).columns  # @UndefinedVariable
     except AttributeError:  # pragma: no cover
         return 120  # pragma: no cover
@@ -492,7 +494,7 @@ def color_log_demo():
     print('Logging test... levels and exception:')
 
     # Hack to skip the log level test
-    # noinspection PyTypeChecker
+    # noinspection PyTypeChecker,PyProtectedMember
     log._log(logging.NOTSET, 'Not set, below DEBUG, normally not show...', [])  # pylint: disable=W0212
     log.debug('Debug')
     log.info('Info')

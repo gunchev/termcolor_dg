@@ -18,13 +18,15 @@ import termcolor_dg
 
 # Python 2 and 3 compatibility
 if sys.version_info[0] == 3:
-    raw_input = input  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
-    unicode = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    # raw_input = input  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    # unicode = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    # noinspection PyShadowingBuiltins
     basestring = str  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
-    long = int  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
+    # long = int  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
 
 
-class CapturedOutput:
+# noinspection PyClassicStyleClass
+class CapturedOutput:  # pylint: disable=old-style-class
     """Temporary replace sys.stdout and sys.stderr with io.StringIO or io.BytesIO"""
 
     def __init__(self):
@@ -44,7 +46,8 @@ class CapturedOutput:
         return self._buf.getvalue()
 
 
-class Coffeine:
+# noinspection PyClassicStyleClass
+class Coffeine:  # pylint: disable=old-style-class
     """Temporary replace time.sleep() with pass"""
 
     def __init__(self):
@@ -59,6 +62,7 @@ class Coffeine:
         return False  # return True # To stop any exception from propagating
 
 
+# noinspection PyPep8Naming,PyMissingOrEmptyDocstring
 class TestTermcolorDg(unittest.TestCase):
     """Test the termcolor_dg module"""
 
@@ -193,19 +197,19 @@ class TestTermcolorDg(unittest.TestCase):
         # self.assertEqual(''.join(out_lines), 1466)
         expected_lines = [
             'Logging test... levels and exception:',
-            '\x1b[30;44;2mYYYY-mm-dd HH:MM:SS,mss Not set, below DEBUG, normally not show...\x1b[0m\x1b[30;2m  ' \
-                '# src.py:123 logger\x1b[0m',
+            '\x1b[30;44;2mYYYY-mm-dd HH:MM:SS,mss Not set, below DEBUG, normally not show...\x1b[0m\x1b[30;2m  '
+            '# src.py:123 logger\x1b[0m',
             '\x1b[34;2mYYYY-mm-dd HH:MM:SS,mss Debug\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
             '\x1b[32;1mYYYY-mm-dd HH:MM:SS,mss Info\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
             '\x1b[33;1mYYYY-mm-dd HH:MM:SS,mss Warning\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
             '\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Error\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
             '\x1b[97;41;1mYYYY-mm-dd HH:MM:SS,mss Critical\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m',
-            "\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Error logging msg='x', args=(1,): TypeError('not all arguments " \
-                "converted during string formatting')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
-            "\x1b[32;1mYYYY-mm-dd HH:MM:SS,mss Error logging msg='%d', args=(1, 2): TypeError('not all arguments " \
-                "converted during string formatting')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
-            "\x1b[34;2mYYYY-mm-dd HH:MM:SS,mss Error logging msg='%d %d', args=('a', 2): TypeError('%d format: " \
-                "a real number is required, not str')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
+            "\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Error logging msg='x', args=(1,): TypeError('not all arguments "
+            "converted during string formatting')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
+            "\x1b[32;1mYYYY-mm-dd HH:MM:SS,mss Error logging msg='%d', args=(1, 2): TypeError('not all arguments "
+            "converted during string formatting')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
+            "\x1b[34;2mYYYY-mm-dd HH:MM:SS,mss Error logging msg='%d %d', args=('a', 2): TypeError('%d format: "
+            "a real number is required, not str')\x1b[0m\x1b[30;2m  # src.py:123 logger\x1b[0m",
             '\x1b[31;1mYYYY-mm-dd HH:MM:SS,mss Exception\x1b[0m\x1b[30;2m  # src.py:123 logger',
             '\x1b[97;45;1m\x1b[2KTraceback (most recent call last):',
             "\x1b[2K    raise TypeError('msg')",
@@ -215,7 +219,7 @@ class TestTermcolorDg(unittest.TestCase):
         self.assertEqual(out_lines, expected_lines)
 
         # cover the "no tail" logging case
-        log_record = logging.LogRecord('name', logging.INFO, 'pathname', 1, 'test', [], None)
+        log_record = logging.LogRecord('name', logging.INFO, 'pathname', 1, 'test', {}, None)
         out = logging.Formatter('%(message)s').format(log_record)
         self.assertEqual(out, '\x1b[32;1mtest\x1b[0m')
         # Cover the disabled ...
