@@ -1,4 +1,8 @@
 TOP := $(shell dirname "$(abspath $(lastword $(MAKEFILE_LIST)))")
+PYTHON ?= python
+PIP ?= pip
+COVERAGE ?= coverage
+PYLINT ?= pylint
 PYLINT_RCFILE ?= .pylintrc
 
 .PHONY: help
@@ -28,23 +32,20 @@ help:
 
 .PHONY: develop
 develop:
-	PYTHONPATH=. python setup.py develop -O1 --install-dir .
+	PYTHONPATH=. $(PYTHON) setup.py develop -O1 --install-dir .
 
 
 .PHONY: test
 test:
-	coverage erase
-	PYTHONPATH=src coverage run -m unittest discover --verbose -s test
-	# coverage combine  # Will fail if only one run...
-	coverage report -m --skip-empty
-	# pylint2 --rcfile .pylintrc2 $(shell git ls-files '*.py')
-	# pylint $(shell git ls-files '*.py')
-	pylint --rcfile $(PYLINT_RCFILE) *.py */*.py
+	$(COVERAGE) erase
+	PYTHONPATH=src $(COVERAGE) run -m unittest discover --verbose -s test
+	$(COVERAGE) report -m # --skip-empty
+	$(PYLINT) --rcfile $(PYLINT_RCFILE) *.py */*.py
 
 
 .PHONY: clean
 clean:
-	coverage erase
+	$(COVERAGE) erase
 	rm -rf ./.tox ./.coverage* ./coverage.json ./coverage.xml ./htmlcov/ ./build/ ./dist/
 	rm -rf ./easy-install* ./easy_install* ./setuptools.pth ./*.egg-link termcolor_dg_demo termcolor_dg_demo_log
 	find . -depth -name '__pycache__' -exec rm -rf \{\} \;
@@ -58,29 +59,30 @@ build: clean
 	sed -i 's#https://raw.githubusercontent.com/gunchev/termcolor_dg/.*/##g' README.md
 	# Redirect to github
 	sed -i 's#](\([a-zA-Z0-9/:_%]*\.png\)#](https://raw.githubusercontent.com/gunchev/termcolor_dg/master/\1#g' README.md
-	python -m build
+	$(PYTHON) -m build
+	# With "$(PYTHON) setup.py sdist" we can get more source formats, but can't upload more than one anyways.
 	# Remove URLs
 	sed -i 's#https://raw.githubusercontent.com/gunchev/termcolor_dg/.*/##g' README.md
-	# With "python setup.py sdist" we can get more source formats, but can't upload more than one anyways.
 
 
 .PHONY: test_install
 test_install:
-	pip install --user -i https://test.pypi.org/simple/ termcolor_dg
+	$(PIP) install --user -i https://test.pypi.org/simple/ termcolor_dg
 
 
 .PHONY: install
 install:
-	pip install --user termcolor_dg
+	$(PIP) install --user termcolor_dg
 
 
 .PHONY: uninstall
 uninstall:
-	pip uninstall termcolor_dg
+	$(PIP) uninstall termcolor_dg
 
 
 .PHONY: rpm
-rpm: build
+rpm:
+	$(PYTHON) setup.py sdist
 	rpmbuild -ba termcolor_dg.spec --define "_sourcedir $(TOP)/dist"
 
 

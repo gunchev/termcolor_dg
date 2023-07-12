@@ -15,7 +15,6 @@ import unittest
 
 import termcolor_dg
 
-
 # Python 2 and 3 compatibility
 if sys.version_info[0] == 3:
     # raw_input = input  # @ReservedAssignment pylint: disable=C0103,redefined-builtin
@@ -26,8 +25,8 @@ if sys.version_info[0] == 3:
 
 
 # noinspection PyClassicStyleClass
-class CapturedOutput:  # pylint: disable=old-style-class
-    """Temporary replace sys.stdout and sys.stderr with io.StringIO or io.BytesIO"""
+class CapturedOutput:
+    """Temporarily replace `sys.stdout` and `sys.stderr` with io.StringIO or io.BytesIO"""
 
     def __init__(self):
         self._buf = io.BytesIO() if sys.version_info < (3, 0) else io.StringIO()
@@ -47,7 +46,7 @@ class CapturedOutput:  # pylint: disable=old-style-class
 
 
 # noinspection PyClassicStyleClass
-class Coffeine:  # pylint: disable=old-style-class
+class Coffeine:
     """Temporary replace time.sleep() with pass"""
 
     def __init__(self):
@@ -86,9 +85,9 @@ class TestTermcolorDg(unittest.TestCase):
 
     def test_main_exists(self):
         """Check if main is defined in the module"""
-        for fname in ('always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging',
-                      'logging_basic_color_config', 'monkey_unpatch_logging', 'monkey_unpatch_logging_format'):
-            self.assertIn(fname, termcolor_dg.__dict__.keys(), '%r not defined?!?' % fname)
+        for file_name in ('always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging',
+                          'logging_basic_color_config', 'monkey_unpatch_logging', 'monkey_unpatch_logging_format'):
+            self.assertIn(file_name, termcolor_dg.__dict__.keys(), '%r not defined?!?' % file_name)
 
     def test_cprint_no_color(self):
         """Check if main is printing the proper string"""
@@ -233,6 +232,7 @@ class TestTermcolorDg(unittest.TestCase):
     def test_color_demo(self):
         """Check the log demo output"""
         os.environ['ANSI_COLORS_FORCE'] = '1'
+        # noinspection PyUnusedLocal
         with CapturedOutput() as out, Coffeine() as a_stimulant:  # @UnusedVariable pylint: disable=unused-variable
             termcolor_dg.termcolor_demo()
             output = out.get_output()

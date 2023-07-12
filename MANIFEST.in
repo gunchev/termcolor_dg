@@ -15,4 +15,6 @@ include TODO.md
 include tox.ini
 include Makefile
 include termcolor_dg.spec
+include .editorconfig
 include .pylintrc
+include .pylintrc2

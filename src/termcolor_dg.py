@@ -38,11 +38,10 @@ import shutil
 import sys
 import time
 
-
 __all__ = ['always_colored', 'colored', 'cprint', 'rainbow_color', 'monkey_patch_logging', 'logging_basic_color_config',
            'COLOR_RESET_STR']
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __copyright__ = 'Copyright (c) 2008-2011 Volvox Development Team'
 __license__ = 'MIT'
 
@@ -53,7 +52,6 @@ __maintainer__ = 'Doncho N. Gunchev'
 __maintainer_email__ = 'dgunchev@gmail.com'
 
 __credits__ = ['Edmund Huber', 'Lukasz Balcerzak', 'Hendrik Buschmeier', 'Nat Meysenburg', 'Iulian PAUN']
-
 
 # Python 2 and 3 compatibility
 if sys.version_info >= (3, 0):  # pragma: no cover
@@ -102,7 +100,7 @@ HIGHLIGHTS = dict((i[0], str(int(i[1]) + 10)) for i in COLORS.items())
 
 
 def color_fmt(color, colors16, cnum):
-    """Format the color/background escape sequence chunk"""
+    """Format the color/background escape sequence chunk."""
     if isinstance(color, basestring):
         if color.startswith('on_'):  # backwards compatibility
             color = color[3:]
@@ -124,19 +122,20 @@ def color_fmt(color, colors16, cnum):
 
 
 def always_colored(text, color=None, on_color=None, attrs=None, reset=True):
-    """Color text with ANSI escape codes
+    """Color text with ANSI escape codes.
 
     color (text color): 'black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'light_grey', 'dark_grey',
         'light_red', 'light_green', 'light_yellow', 'light_blue', 'light_magenta', 'light_cyan', 'white'.
 
-    on_color (text background): same as color but with 'on_' or 'on ' prefix.
+    On_color (text background): same as color but with 'on_' or 'on ' prefix.
 
-    attributes: 'bold', 'dark', 'underline', 'blink', 'reverse', 'concealed'.
+    Attributes: 'bold', 'dark', 'underline', 'blink', 'reverse', 'concealed'.
 
-    reset: if set to false do not emit reset sequence at the end.
+    Reset: If set to false, don't emit a reset sequence at the end.
 
     Additionally, if 256 colors are supported, any integer between 1 and 255 can be provided for both foreground
-    and background. A tuple/list with three integers (R, G, B) can be provided for 24 bit color.
+    and background.
+    A tuple/list with three integers (R, G, B) can be provided for 24-bit color.
 
     Examples:
         always_colored('Hello, World!', 'red', 'on_black', ['bold', 'blink'])
@@ -179,7 +178,7 @@ def colored(text, color=None, on_color=None, attrs=None, reset=True):
         on_light_red, on_light_green, on_light_yellow, on_light_blue, on_light_magenta, light_cyan.
 
     Additionally, if 256 colors are supported, any integer between 1 and 255 can be provided for both
-    foreground and background. A tuple/list with three elements (R, G, B) can be used for 24 bit color.
+    foreground and background. A tuple/list with three elements (R, G, B) can be used for 24-bit color.
 
     Available attributes:
         bold, dark, underline, blink, reverse, concealed.
@@ -204,7 +203,7 @@ def cprint(text='', color=None, on_color=None, attrs=None, reset=True, **kwargs)
 
 
 def rainbow_color(n, steps, nmax=255):
-    """Calculate rainbow color"""
+    """Calculate rainbow color."""
     if not isinstance(n, int) and isinstance(steps, int):
         raise TypeError('Arguments must be integers')
     if steps < 6:
@@ -226,19 +225,19 @@ def rainbow_color(n, steps, nmax=255):
 
 
 def monkey_patch_logging_format():
-    """Monkey patches the logging module format error report"""
+    """Monkey patches the logging module format error report."""
     if getattr(logging.LogRecord, 'distGetMessage', None) is not None:
         return
 
     logging.LogRecord.distGetMessage = logging.LogRecord.getMessage
 
     def print_log_record_on_error(func):
-        """Monkeypatch for logging.LogRecord.getMessage
+        """Monkeypatch for `logging.LogRecord.getMessage`.
 
         Credits: https://stackoverflow.com/questions/2477934/"""
 
         def wrap(self, *args, **kwargs):
-            """Generate wrapper function for logging.LogRecord.getMessage"""
+            """Generate wrapper function for `logging.LogRecord.getMessage`."""
             try:
                 return func(self, *args, **kwargs)
             except Exception as exc:  # pylint: disable=broad-except
@@ -247,12 +246,12 @@ def monkey_patch_logging_format():
 
         return wrap
 
-    # Monkeypatch the logging library for more informative formatting errors
+    # Monkeypatch the logging library for more informative formatting errors.
     logging.LogRecord.getMessage = print_log_record_on_error(logging.LogRecord.getMessage)
 
 
 def monkey_unpatch_logging_format():
-    """Undo monkey_patch_logging_format"""
+    """Undo monkey_patch_logging_format."""
     if getattr(logging.LogRecord, 'distGetMessage', None) is None:
         return
     # noinspection PyUnresolvedReferences
@@ -261,7 +260,7 @@ def monkey_unpatch_logging_format():
 
 
 def monkey_patch_logging(color_on_terminal=True):
-    """Monkey patches the logging module and add colors if enabled"""
+    """Monkey patches the logging module and adds color if enabled."""
 
     if getattr(logging, 'DistFormatter', None) is not None:
         return True
@@ -269,15 +268,16 @@ def monkey_patch_logging(color_on_terminal=True):
     monkey_patch_logging_format()
 
     if color_on_terminal and not DISABLED:
-        # Monkey patches the logging module to print in color'
+        # Monkey patches the logging module to print in color.
 
         def get_formatter(logging_formatter=logging.Formatter):
             """Get it? ;-)"""
 
             class ColoredFormatter(logging_formatter):
-                """Color console formatter"""
+                """Color console formatter."""
 
                 def format(self, record):
+                    """Color console formatter."""
                     output = logging_formatter.format(self, record)
                     tail = None
                     comment_pos = output.find('  # ')  # Intentionally require two spaces before
@@ -319,7 +319,7 @@ def monkey_patch_logging(color_on_terminal=True):
 
 
 def monkey_unpatch_logging():
-    """Undo monkey_patch_logging"""
+    """Undo monkey_patch_logging."""
 
     monkey_unpatch_logging_format()
 
@@ -331,16 +331,16 @@ def monkey_unpatch_logging():
 
 def logging_basic_color_config(level='DEBUG', fmt='%(asctime)s %(message)s  # %(filename)s:%(lineno)d %(name)s',
                                color_on_terminal=True):
-    """Setup basic logging with fancy format and colors if running on terminal
+    """Setup basic logging with fancy format and colors if running on a terminal.
 
-    a very fancy fmt would be "%(asctime)s %(levelname)-8s: %(message)s  # %(filename)s:%(lineno)d %(name)s"
+    A very fancy fmt would be "%(asctime)s %(levelname)-8s: %(message)s  # %(filename)s:%(lineno)d %(name)s".
     """
     monkey_patch_logging(color_on_terminal=color_on_terminal)
     logging.basicConfig(level=level, format=fmt)
 
 
 def termcolor_demo_16():
-    """Base 16 color demo"""
+    """Base 16 color demo."""
     colors = ('black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'light_grey', 'dark_grey', 'light_red',
               'light_green', 'light_yellow', 'light_blue', 'light_magenta', 'light_cyan', 'white')
     max_len = max(len(color) for color in colors)
@@ -390,12 +390,12 @@ def termcolor_demo_16():
     print(' [' + 'Dark blink concealed white', end=']\n')
 
     def all_combos(values):
-        """Generate all combinations"""
+        """Generate all combinations."""
         values = tuple(values)
         if values:
-            for i in all_combos(values[1:]):
-                yield i
-                yield [values[0]] + i
+            for j in all_combos(values[1:]):
+                yield j
+                yield [values[0]] + j
         else:
             yield []
 
@@ -411,7 +411,7 @@ def termcolor_demo_16():
 
 
 def termcolor_demo_256():
-    """256 color demo"""
+    """256 color demo."""
     print('\n--- 256 color mode test '.ljust(120, '-'))
     print(' First 16: [', end='')
     for i in range(16):
@@ -439,7 +439,7 @@ def termcolor_demo_256():
 
 
 def termcolor_demo_24bit():
-    """24 bit color demo"""
+    """24-bit color demo."""
     data = '=== 24 bit color mode test '.ljust(114, '=')
     for i in range(2 * len(data), -1, -1):
         print('\r   ', end='')
@@ -476,7 +476,7 @@ def get_term_width():
 
 
 def termcolor_demo():
-    """Demonstrate this module's capabilities"""
+    """Demonstrate this module's capabilities."""
     termcolor_demo_16()
     termcolor_demo_256()
     if get_term_width() >= 120 or os.getenv('ANSI_COLORS_FORCE') is not None:
@@ -486,7 +486,7 @@ def termcolor_demo():
 
 
 def color_log_demo():
-    """Test color logging on terminal and logging format error"""
+    """Test color logging on terminal and logging format error."""
     # monkey_patch_logging(color_on_terminal=True)
     logging_basic_color_config()
 
@@ -494,7 +494,7 @@ def color_log_demo():
     print('Logging test... levels and exception:')
 
     # Hack to skip the log level test
-    # noinspection PyTypeChecker,PyProtectedMember
+    # noinspection PyTypeChecker, PyProtectedMember
     log._log(logging.NOTSET, 'Not set, below DEBUG, normally not show...', [])  # pylint: disable=W0212
     log.debug('Debug')
     log.info('Info')
@@ -513,7 +513,7 @@ def color_log_demo():
 
 
 def main():
-    """Main demo entry point, if no arguments - color demo, if any - colored logs demo"""
+    """Main demo entry point, if no arguments - color demo, if any - colored logs demo."""
     if len(sys.argv) == 1:  # pragma: no cover
         return termcolor_demo()  # pragma: no cover
     return color_log_demo()  # pragma: no cover

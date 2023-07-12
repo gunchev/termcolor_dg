@@ -3,7 +3,7 @@
 %global srcname termcolor_dg
 
 Name:           python-%{srcname}
-Version:        1.0.0
+Version:        1.0.1
 Release:        0%{?dist}
 Summary:        ANSI Color formatting for terminal output and log coloring.
 License:        MIT
@@ -72,7 +72,7 @@ rm -rf "$RPM_BUILD_ROOT"
 
 
 %check
-make test
+PYLINT=pylint-3 make test
 
 
 %files -n  python%{python3_pkgversion}-%{srcname}
