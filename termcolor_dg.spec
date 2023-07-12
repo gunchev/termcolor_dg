@@ -14,7 +14,7 @@ BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-check-manifest >= 0.42
+# BuildRequires:  python%%{python3_pkgversion}-check-manifest >= 0.42
 BuildRequires:  python%{python3_pkgversion}-coverage
 BuildRequires:  python%{python3_pkgversion}-flake8
 BuildRequires:  python%{python3_pkgversion}-pylint
