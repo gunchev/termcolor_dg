@@ -8,7 +8,7 @@ Release:        0%{?dist}
 Summary:        ANSI Color formatting for terminal output and log coloring.
 License:        MIT
 URL:            https://github.com/gunchev/termcolor_dg/%{srcname}
-Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/%{version}.tar.gz?name=%{srcname}-%{version}.tar.gz
+Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/%{version}/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -72,7 +72,7 @@ rm -rf "$RPM_BUILD_ROOT"
 
 
 %check
-PYLINT=pylint-3 make test
+PYLINT=pylint-3 COVERAGE=coverage-3 make test
 
 
 %files -n  python%{python3_pkgversion}-%{srcname}
