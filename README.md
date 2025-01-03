@@ -128,7 +128,7 @@ Functions
 You may want to check out:
 
 - 📦 [pypi/termcolor](https://pypi.python.org/pypi/termcolor) - the original project
-- 📦 [delameter/termcolor](https://github.com/delameter/termcolor) - fork of the original termcolor_dg extends
+- 📦 [natmey/termcolor](https://github.com/natmey/termcolor) - fork of the original termcolor that termcolor_dg extends
 - 📦 [pypi/colorama](https://pypi.org/project/colorama/) for more advanced options.
 
 

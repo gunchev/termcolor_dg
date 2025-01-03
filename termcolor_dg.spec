@@ -3,12 +3,12 @@
 %global srcname termcolor_dg
 
 Name:           python-%{srcname}
-Version:        1.0.1
+Version:        1.0.2
 Release:        0%{?dist}
 Summary:        ANSI Color formatting for terminal output and log coloring.
 License:        MIT
 URL:            https://github.com/gunchev/termcolor_dg/%{srcname}
-Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/gunchev/%{srcname}/archive/refs/tags/%{version}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
 

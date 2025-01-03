@@ -1,7 +1,8 @@
 [MESSAGES CONTROL]
 disable=
     consider-using-f-string,
-    unspecified-encoding
+    unspecified-encoding,
+    possibly-used-before-assignment
 
 [FORMAT]
 expected-line-ending-format=LF
